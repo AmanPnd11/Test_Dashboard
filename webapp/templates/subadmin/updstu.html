@@ -1,0 +1,137 @@
+{% extends "subadmin/subadmindashboard.html"%}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>{% block title %}SubAdmin Dashboard{% endblock %}</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+{%block Content%}
+<div class="sidebar" id="sidebar">
+    <h4>Aman<br>Technologies</h4>
+    <a href="{% url 'subadmindashboard' %}" class="active">🏠 Home</a>
+    <a href="{% url 'subject_test_creation' %}"><b>📘 Subject</b></a> 
+    <a href="#"><b>📊 Test </b></a>
+    <a href="{% url 'deptquestions' %}"><b>📊 Questions </b></a>
+    <a href="{% url 'deptstudent' %}"><b>👤 Students</b></a>
+    <a href="{% url 'result_view'%}"><b>📊 Results</b></a>
+    <a href="{% url 'subadminprofile' %}"><b>👤 SubAdmin Profile</b></a>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+    
+    <!-- Topbar -->
+    <div class="topbar mb-4">
+        <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
+        <h2>Hi, SubAdmin..! Welcome to the Department Dashboard</h2>
+        <a href="{% url 'subadminlogin'%}" class="btn btn-danger"><b>Logout</b></a>
+    </div>
+
+    <!-- Welcome -->
+  <h4 class="fw-bold mb-4 text-secondary">
+      Welcome to the SubAdmin Dashboard
+  </h4>
+
+
+
+    <div class="container mt-4">
+        <div class="card"
+            style="padding:25px; border-radius:5px; background:white; box-shadow:0px 0px 10px #ddd;">
+
+
+            {% for stud in studs %}
+                <form method="POST">
+                {% csrf_token %}
+                
+                <table class="table table-sm">
+                    <tr>
+                        <th>User Name</th>
+                        <td><input type="text" class="form-control" placeholder="UserName" aria-label="UserName" aria-describedby="addon-wrapping" name="username" value="{{ stud.username }}"></td>
+                    </tr>
+                
+                    <tr>
+                        <th>Email</th>
+                        <td><input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="addon-wrapping"  name="mail" value="{{ stud.mail }}"></td>
+                    </tr>
+                
+                    <tr>
+                        <th>RollNo</th>
+                        <td><input type="text" class="form-control" placeholder="RollNo" aria-label="RollNo" aria-describedby="addon-wrapping" name="RollNo" value="{{ stud.RollNo }}"></td>
+                    </tr>
+
+                    <tr>
+                        <th>Department</th>
+                        <td><input type="text" class="form-control" placeholder="Department" aria-label="Department" aria-describedby="addon-wrapping" name="Department" value="{{ stud.Department.Deptcode }}"></td>
+                    </tr>
+
+                    <tr>
+                        <th>MobileNo</th>
+                        <td><input type="text" class="form-control" placeholder="MobileNo" aria-label="MobileNo" aria-describedby="addon-wrapping" name="MobileNo" value="{{ stud.MobileNo }}"></td>
+                    </tr>
+                
+                    {% comment %} <tr>
+                        <th>Role</th>
+                        <td><input type="text" class="form-control" placeholder="Role" aria-label="Role" aria-describedby="addon-wrapping" name="Role" value="{{ admin.Role }}"></td>
+                    </tr> {% endcomment %}
+                
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" style="background: linear-gradient(90deg, #6f74dd,rgb(90, 29, 204))" class="btn btn-success">Update</button>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+                <br>
+           {% endfor %}
+
+    {% comment %} <div class="container mt-4">
+
+      <div class="container mt-4">
+          <div class="card"
+               style="padding:25px; border-radius:5px; background:white; box-shadow:0px 0px 10px #ddd;">
+      
+               <table class="table table-bordered">
+                   <thead>
+                       <tr>
+                           <th>Admin Name</th>
+                           <th>User Name</th>
+                           <th>Email</th>
+                           <th>Mobile</th>
+                           <th>Role</th>
+                           <th>Created Date</th>
+                       </tr>
+                   </thead>
+               
+                   <tbody>
+                        {% for admin in admins %} 
+                       <tr>
+                           <td>{{admin.AdminName }}</td>
+                           <td>{{admin.UserName }}</td>
+                           <td>{{admin.Email }}</td>
+                           <td>{{admin.MobileNumber }}</td>
+                           <td>{{admin.Role }}</td>
+                           <td>{{admin.CreatedAt}}</td>
+                        </tr>
+                        {% endfor %} 
+                   </tbody>
+               </table> {% endcomment %}
+                
+            
+        </div>
+    </div>     
+</div>
+
+
+{% endblock%}
+
+</body>
+</html>
+

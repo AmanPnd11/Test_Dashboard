@@ -1,0 +1,277 @@
+{% load static %}
+{% comment %} <h1>ADMIN PAGE</h1> {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>SubAdmin Dashboard</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            background: linear-gradient(180deg, #4f46e5, #6366f1);
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar h4 {
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #e5e7eb;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background-color: #fff;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        /* Main content */
+        .main {
+            margin-left: 260px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        /* Topbar */
+        .topbar {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .topbar h2 {
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        /* Dashboard cards */
+        .card-box {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 6px solid #4f46e5;
+        }
+
+        .card-box:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+        .card-box h6 {
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .card-box h3 {
+            color: #4f46e5;
+            font-weight: 800;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -260px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {%block Content%}
+        <div class="sidebar" id="sidebar">
+            <h4>Aman<br>Technologies</h4>
+            <a href="{% url 'subadmindashboard' %}" class="active">🏠 Home</a>
+            <a href="{% url 'subject_test_creation' %}"><b>📘 Subject</b></a> 
+            {% comment %} <a href="#"><b>📊 Test </b></a> {% endcomment %}
+            <a href="{% url 'deptquestions' %}"><b>📊 Questions </b></a>
+            <a href="{% url 'deptstudent' %}"><b>👤 Students</b></a>
+            <a href="{% url 'result_view'%}"><b>📊 Results</b></a>
+            <a href="{% url 'subadminprofile' %}"><b>👤 SubAdmin Profile</b></a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main">
+            
+            <!-- Topbar -->
+            <div class="topbar mb-4">
+                <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
+                <h2>Hi, SubAdmin..! Welcome to the Department Dashboard</h2>
+                <a href="{% url 'subadminlogin'%}" class="btn btn-danger"><b>Logout</b></a>
+            </div>
+
+            <!-- Welcome -->
+            <h4 class="fw-bold mb-4 text-secondary">
+                SUBADMIN PROFILE
+            </h4>
+
+
+    <div class="container mt-4">
+        <div class="card"
+            style="padding:25px; border-radius:5px; background:white; box-shadow:0px 0px 10px #ddd;">
+
+                <form method="POST" action="#">
+                {% csrf_token %}
+                
+                <table class="table table-sm">
+                    <tr>
+                        <th>Admin Name</th>
+                        <td><input type="text" class="form-control" placeholder="Subadminfirstname" aria-label="Subadminfirstname" aria-describedby="addon-wrapping" name="Subadminfirstname" value="{{ subadmins.Subadminfirstname }}"></td>
+                    </tr>
+                
+                    <tr>
+                        <th>User Name</th>
+                        <td><input type="text" class="form-control" placeholder="Subadminlastname" aria-label="Subadminlastname" aria-describedby="addon-wrapping"  name="Subadminlastname" value="{{ subadmins.Subadminlastname }}"></td>
+                    </tr>
+                
+                    <tr>
+                        <th>Email</th>
+                        <td><input type="email" class="form-control" placeholder="Subadminemail" aria-label="Subadminemail" aria-describedby="addon-wrapping" name="Subadminemail" value="{{ subadmins.Subadminemail }}"></td>
+                    </tr>
+                
+                    <tr>
+                        <th>Mobile</th>
+                        <td><input type="text" class="form-control" placeholder="Subadminmobile" aria-label="Subadminmobile" aria-describedby="addon-wrapping" name="Subadminmobile" value="{{ subadmins.Subadminmobile }}"></td>
+                    </tr>
+                
+                    <tr>
+                        <th>Role</th>
+                        <td><input type="text" class="form-control" placeholder="Role" aria-label="Role" aria-describedby="addon-wrapping" name="Role" value="SubAdmin"></td>
+                    </tr>
+                
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" style="background: linear-gradient(90deg, #6f74dd,rgb(90, 29, 204))" class="btn btn-success">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                     <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+
+    {% comment %} <div class="container mt-4">
+
+      <div class="container mt-4">
+          <div class="card"
+               style="padding:25px; border-radius:5px; background:white; box-shadow:0px 0px 10px #ddd;">
+      
+               <table class="table table-bordered">
+                   <thead>
+                       <tr>
+                           <th>Admin Name</th>
+                           <th>User Name</th>
+                           <th>Email</th>
+                           <th>Mobile</th>
+                           <th>Role</th>
+                           <th>Created Date</th>
+                       </tr>
+                   </thead>
+               
+                   <tbody>
+                        {% for admin in admins %} 
+                       <tr>
+                           <td>{{admin.AdminName }}</td>
+                           <td>{{admin.UserName }}</td>
+                           <td>{{admin.Email }}</td>
+                           <td>{{admin.MobileNumber }}</td>
+                           <td>{{admin.Role }}</td>
+                           <td>{{admin.CreatedAt}}</td>
+                        </tr>
+                        {% endfor %} 
+                   </tbody>
+               </table> {% endcomment %}
+               <a href="{% url 'forgotsubadmin' %}">
+                  <button type="submit" style="background: linear-gradient(90deg, #6f74dd,rgb(90, 29, 204))" class="btn btn-primary mb-3">Change Password</button>
+               </a>
+               <div class="d-flex justify-content-between align-items-center mb-3">
+                   <!-- The theme toggle button -->
+                   <button id="theme-toggle" style="background: linear-gradient(90deg, #6f74dd,rgb(90, 29, 204))" class="btn btn-primary">Switch to Dark Theme</button>
+               </div>
+                
+            
+        </div>
+    </div>     
+</div>
+
+<script>
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-bs-theme', theme);
+        localStorage.setItem('theme', theme);
+        // Update button text
+        const toggleButton = document.getElementById('theme-toggle');
+        if (toggleButton) {
+            toggleButton.textContent = theme === 'dark' ? 'Light Theme' : 'Dark Theme';
+        }
+    }
+    
+    // Function to toggle between light and dark themes
+    function toggleTheme() {
+        const currentTheme = localStorage.getItem('theme') || 'light'; // Default to 'light'
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+    }
+    
+    // On page load, apply the saved theme or default
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme');
+        // If no theme is saved, use system preference or default to light
+        if (!savedTheme) {
+            const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setTheme(systemPrefersDark ? 'dark' : 'light');
+        } else {
+            setTheme(savedTheme);
+        }
+    
+        // Add event listener to the button
+        const toggleButton = document.getElementById('theme-toggle');
+        if (toggleButton) {
+            toggleButton.addEventListener('click', toggleTheme);
+        }
+    });
+</script>
+{% endblock%}
+
+</body>
+</html>
+        

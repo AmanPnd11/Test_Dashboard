@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ test.title }} | Online Test</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f3f6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .timer {
+            text-align: right;
+            font-size: 18px;
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .question-box {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+        .options label {
+            display: block;
+            padding: 6px 0;
+            cursor: pointer;
+        }
+        .submit-btn {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>{{ test.title }}</h2>
+    <p><strong>Total Questions:</strong> {{ questions.count }}</p>
+    {% comment %} <p><strong>Total Marks:</strong> {{ test.total_marks }}</p> {% endcomment %}
+
+    <!-- Timer -->
+    <div class="timer">
+        Time Left: <span id="time">{{ test.duration }}:00</span>
+    </div>
+
+    <form action="{% url 'test_submit' test.id %}" method="POST">
+        {% csrf_token %}
+
+        {% for question in questions %}
+        <p>{{ question.question_text }}</p>
+
+        <label>
+            <input type="radio"
+                   name="{{ question.id }}"
+                   value="A">
+            {{ question.option_a }}
+        </label><br>
+
+        <label>
+            <input type="radio"
+                   name="{{ question.id }}"
+                   value="B">
+            {{ question.option_b }}
+        </label><br>
+
+        <label>
+            <input type="radio"
+                   name="{{ question.id }}"
+                   value="C">
+            {{ question.option_c }}
+        </label><br>
+
+        <label>
+            <input type="radio"
+                   name="{{ question.id }}"
+                   value="D">
+            {{ question.option_d }}
+        </label><br><br>
+
+    {% endfor %}
+
+        <div style="text-align:center;">
+            <button type="submit" class="submit-btn">
+                Submit Test
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- ⏱ Timer Script -->
+<script>
+    let minutes = {{ test.duration }};
+    let seconds = 0;
+
+    const timer = document.getElementById("time");
+
+    const interval = setInterval(() => {
+        if (seconds === 0) {
+            if (minutes === 0) {
+                clearInterval(interval);
+                alert("Time is up! Test will be submitted.");
+                document.forms[0].submit();
+            }
+            minutes--;
+            seconds = 59;
+        } else {
+            seconds--;
+        }
+
+        timer.textContent =
+            String(minutes).padStart(2, '0') + ":" +
+            String(seconds).padStart(2, '0');
+    }, 1000);
+</script>
+
+</body>
+</html>

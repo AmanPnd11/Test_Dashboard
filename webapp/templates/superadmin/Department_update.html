@@ -1,0 +1,81 @@
+{% comment %} {% extends "superadmin/index.html"%}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>{% block title %}Admin Dashboard{% endblock %}</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+{%block Content%}
+<div class="sidebar" id="sidebar">
+    <h4>Aman<br>Technologies</h4>
+    <a href="{% url 'index'%}" class="active">🏠 Home</a>
+    <a href="{% url 'about' %}"><b>ℹ️ About</b></a>
+    <a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
+    <a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
+    <a href="{% url 'students'%}"><b>👤 Students</b></a>
+    <a href="{% url 'studentresult'%}"><b>📊 Results</b></a>
+    <a href="{% url 'adminprofile'%}"><b>👤 Admin Profile</b></a>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+  <!-- Topbar -->
+  <div class="topbar mb-4">
+        <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
+        <h2>Hi, Admin..! Welcome to the Dashboard</h2>
+        <a href="{% url 'adminlogin'%}" class="btn btn-danger"><b>Logout</b></a>
+  </div>
+
+
+    <h4 class="fw-bold mb-2 text-secondary mt-4">
+        MANAGE DEPARTMENT
+    </h4>
+    <div class="container mt-4">
+            <div class="card" style="padding:25px; border-radius:5px; background:white; box-shadow:0px 0px 10px #ddd;">
+           
+                {% for depart in departs %}
+                <form method="POST" action="{% url 'dept_update' %}">
+                {% csrf_token %}
+                
+                <table class="table table-sm">
+                    <tr>
+                        <th>Department ID</th>
+                        <td><input type="text" name="id" value="{{ depart.id }}"></td>
+                    </tr>
+                
+                    <tr>
+                        <th>Department Name</th>
+                        <td><input type="text" name="Deptname" value="{{ depart.Deptname }}"></td>
+                    </tr>
+                
+                    <tr>
+                        <th>Department Code</th>
+                        <td><input type="text" name="Deptcode" value="{{ depart.Deptcode }}"></td>
+                    </tr>
+                
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" style="background: linear-gradient(90deg, #6f74dd,rgb(90, 29, 204))" class="btn btn-success">Update</button>
+                        </td>
+                    </tr>
+                    <br>
+                </table>
+                </form>
+
+           {% endfor %}
+            </div>
+    </div>       
+</div>
+
+{% endblock %}
+
+</html>
+</body> {% endcomment %}

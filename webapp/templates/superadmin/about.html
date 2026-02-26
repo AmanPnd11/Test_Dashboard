@@ -1,0 +1,55 @@
+
+{% extends "superadmin/index.html"%}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>{% block title %}Admin Dashboard{% endblock %}</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    {%block Content%}
+        <div class="sidebar" id="sidebar">
+            <h4>Aman<br>Technologies</h4>
+            <a href="{% url 'index'%}" class="active">🏠 Home</a>
+            <a href="{% url 'about'%}"><b>ℹ️ About</b></a>
+            <a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
+            <a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
+            <a href="{% url 'students'%}"><b>👤 Students</b></a>
+            <a href="{% url 'studentresult'%}"><b>📊 Results</b></a>
+            <a href="{% url 'adminprofile'%}"><b>👤 Admin Profile</b></a>
+        </div>
+ 
+            <!-- Main Content -->
+            <div class="main">
+                
+                <!-- Topbar -->
+                <div class="topbar mb-4">
+                    <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
+                    <h2>Hi, Admin..! Welcome to the Dashboard</h2>
+                    <a href="{% url 'adminlogin'%}" class="btn btn-danger"><b>Logout</b></a>
+                </div>
+            
+                <!-- Welcome -->
+                <h4 class="fw-bold mb-4 text-secondary">
+                    Welcome to the Admin Dashboard
+                </h4>
+                <h5><i><b>Aman Technologies is a forward-thinking technology company dedicated to building smart, scalable, and reliable digital solutions. We specialize in transforming ideas into powerful software products that help businesses grow, adapt, and succeed in a rapidly evolving digital world.
+            
+                    Founded with a vision to simplify technology and make it accessible, Aman Technology focuses on delivering high-quality solutions with precision, innovation, and integrity. From web applications and enterprise systems to customized software development, we combine technical expertise with creative problem-solving to deliver results that truly matter.
+                    
+                    At Aman Technology, we believe technology should solve real problems, not create complexity. Our approach is client-centric — we listen, analyze, and design solutions that align perfectly with business goals. Every project we undertake is driven by performance, security, and long-term scalability.
+                    
+                    Our team is passionate about continuous learning and innovation, ensuring we stay ahead of industry trends and deliver modern, future-ready solutions. Whether you are a startup, an educational institution, or an enterprise, Aman Technology is your trusted partner for digital excellence.
+                </b></i></h5>
+            
+            </div>
+    {%endblock%}
+</body>
+</html>

@@ -1,0 +1,104 @@
+{% extends "superadmin/index.html"%}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>{% block title %}Admin Dashboard{% endblock %}</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+{%block Content%}
+<div class="sidebar" id="sidebar">
+    <h4>Aman<br>Technologies</h4>
+    <a href="{% url 'index'%}" class="active">🏠 Home</a>
+    <a href="{% url 'about' %}"><b>ℹ️ About</b></a>
+    <a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
+    <a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
+    <a href="{% url 'students'%}"><b>👤 Students</b></a>
+    <a href="{% url 'studentresult'%}"><b>📊 Results</b></a>
+    <a href="{% url 'adminprofile'%}"><b>👤 Admin Profile</b></a>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+    
+    <!-- Topbar -->
+    <div class="topbar mb-4">
+        <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
+        <h2>Hi, Admin..! Welcome to the Dashboard</h2>
+        <a href="{% url 'adminlogin'%}" class="btn btn-danger"><b>Logout</b></a>
+    </div>
+
+    <!-- Welcome -->
+    <h4 class="fw-bold mb-4 text-secondary">
+        STUDENTS DETAILS
+    </h4>
+
+    <form method="GET">
+        <div class="row">
+            <div class="col-md-8">
+                <input type="text" name="query" class="form-control"
+                       placeholder=" FirstName /  LastName /  Email  /  MobileNo. /  Department "
+                       value="{{ query }}">
+            </div>
+
+            <div class="col-md-4 d-flex">
+                <button class="btn"
+                        style="background: linear-gradient(90deg, #6f74dd,rgb(90, 29, 204)); color:white; border:none; padding:7px 20px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+
+
+    <div class="container mt-4">
+        <div class="card"
+            style="padding:25px; border-radius:5px; background:white; box-shadow:0px 0px 10px #ddd;">
+             <table class="table table-bordered">
+                 <thead>
+                     <tr>
+                         <th>Students User Name</th>
+                         <th>Students Department</th>
+                         <th>Students Mobile No.</th>
+                         <th>Action</th>
+                     </tr>
+                 </thead>
+             
+                 <tbody>
+                       {% for stu in students %}  
+                     <tr>
+                         <td>{{stu.username }}</td>
+                         <td>{{stu.Department.Deptcode}}</td>
+                         <td>{{stu.MobileNo}}</td>
+                         <td><div class="mb-3">
+                            <a href="{% url 'updatestudent1' stu.mail %}" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                              </svg>
+                            </a>
+                         </div>
+                          {% comment %} <div> 
+                            <a href="#" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                              </svg></a>
+                          </div> {% endcomment %}
+                         </td>
+                       {% endfor %}  
+                 </tbody>
+             </table>
+          </div>
+      </div>
+   </div>
+</div>
+    {%endblock%}
+</body>
+</html>
