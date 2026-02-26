@@ -156,8 +156,8 @@ if not TblSuperAdmin.objects.filter(Role='SUPER_ADMIN').exists():
 
 def adminlogin(request):
      if request.method == "POST":
-        Email = request.POST.get("Email", "").strip()  # Safely get the username
-        Password = request.POST.get("Password", "").strip()  # Safely get the password
+        Email = request.POST.get("Email", "").strip()  
+        Password = request.POST.get("Password", "").strip()  
 
         try:
             admin = TblSuperAdmin.objects.get(Email=Email, Role='SUPER_ADMIN')
@@ -236,7 +236,7 @@ def forgotadmin(request):
 
 
 def updatestudent(request):
-    stus = studentregistration.objects.all()   # fetch ALL admins
+    stus = studentregistration.objects.all()   
     context = {
         "stus": stus
     }
@@ -312,7 +312,6 @@ def subadminreg(request):
         password = request.POST.get("Subadminpassword")
         department_id = request.POST.get("Department")
 
-        # Department validation
         if not department_id:
             messages.error(request, "Please select a department")
             return redirect("subadminreg")
@@ -323,17 +322,14 @@ def subadminreg(request):
             messages.error(request, "Invalid Department selected")
             return redirect("subadminreg")
 
-        # Email check
         if TblSubAdmin.objects.filter(Subadminemail=email).exists():
             messages.error(request, "Email already exists")
             return redirect("subadminreg")
 
-        # One department = one subadmin
         if TblSubAdmin.objects.filter(Department=department_obj).exists():
             messages.error(request, "Department already assigned")
             return redirect("subadminreg")
 
-        # Create SubAdmin (HASH PASSWORD)
         TblSubAdmin.objects.create(
             Subadminfirstname=firstname,
             Subadminlastname=lastname,
@@ -348,7 +344,7 @@ def subadminreg(request):
 
     departments = Department.objects.all()
 
-    return render(request, "superadmin/Subadmins.html",{"depts": departments})   # matches HTML
+    return render(request, "superadmin/Subadmins.html",{"depts": departments})   L
 
 
 
@@ -374,7 +370,7 @@ def subadminlogin(request):
             messages.error(request, "Invalid login credentials")
             return redirect("subadminlogin")
 
-        #LOGIN SUCCESS
+        
         request.session["subadmin_id"] = subadmin.id
         request.session["department_id"] = department.id
 
@@ -475,13 +471,11 @@ def get_subadmin(request):
 #         test_name = request.POST.get('test_name')
 #         duration = request.POST.get('duration')
 
-#         # create subject if new
 #         subject, created = Subject.objects.get_or_create(
 #             Subjectname=subject_name,
 #             Department=subadmin.Department
 #         )
 
-#         # create test
 #         test = Test.objects.create(
 #             test_name=test_name,
 #             Subjectname=Subjectname,
@@ -509,17 +503,15 @@ def subject_test_creation(request):
         test_name = request.POST.get('test_name')
         duration = request.POST.get('duration')
 
-        # create or get subject
         subject, created = Subject.objects.get_or_create(
             Subjectname=subject_name,
             Department=subadmin.Department
         )
 
-        # create test (FIXED)
         test = Test.objects.create(
             test_name=test_name,
-            Subject=subject,                # correct FK
-            duration=int(duration),         # cast to int
+            Subject=subject,               
+            duration=int(duration),         
             Department=subadmin.Department,
             created_by=subadmin
         )
@@ -630,7 +622,6 @@ def studentlogin(request):
 
 
 
-# STUDENT DASHBOARD VIEW FUNCTION
 def studentdashboard(request):
     student = studentregistration.objects.get(id=request.session.get("student_id"))
     context = {
@@ -668,7 +659,6 @@ def forgotstudent(request):
         new_password = request.POST.get("CreatePassword")
         confirm_password = request.POST.get("ConfirmPassword")
 
-        # Password match check
         if new_password != confirm_password:
             return render(request, "student/forgotstudent.html", {
                 "error": "Passwords do not match!"
@@ -677,7 +667,6 @@ def forgotstudent(request):
         try:
             student = studentregistration.objects.get(mail=email)
 
-            # Update password
             student.CreatePassword = new_password
             student.save()
 
@@ -688,7 +677,6 @@ def forgotstudent(request):
                 "error": "Email not found!"
             })
 
-    # ✅ VERY IMPORTANT (Handles GET request)
     return render(request, "student/forgotstudent.html")
 
 
