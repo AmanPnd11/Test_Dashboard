@@ -343,8 +343,7 @@ def subadminreg(request):
         return redirect("subadmins")
 
     departments = Department.objects.all()
-
-    return render(request, "superadmin/Subadmins.html",{"depts": departments})   L
+    return render(request, "superadmin/Subadmins.html",{"depts": departments})   
 
 
 
