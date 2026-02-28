@@ -443,11 +443,6 @@ def forgotsubadmin(request):
 
 
 
-def deptquestions(request):
-
-    return render(request,'subadmin/deptquestions.html')
-
-
 
 def deptstudent(request):
     students = studentregistration.objects.filter(Department_id=request.session.get("department_id"))

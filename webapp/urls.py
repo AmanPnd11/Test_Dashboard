@@ -40,7 +40,6 @@ urlpatterns = [
             path('subadminprofile/', views.subadminprofile, name='subadminprofile'),
             path('deptstudent/', views.deptstudent, name='deptstudent'),
             path('updstu/', views.updstu, name='updstu'),
-            path('deptquestions/', views.deptquestions, name='deptquestions'),
             path('subject_test_creation/', views.subject_test_creation, name='subject_test_creation'),
             path('upload_question/<int:test_id>/', views.upload_question, name='upload_question'),
             path('result_view/', views.result_view, name='result_view'),
