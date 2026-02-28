@@ -118,13 +118,48 @@
 </head>
 <body>
     {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>
-    {% endfor %}
-  {% endif %}
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+    
+                {% for message in messages %}
+                <div class="modal-header 
+                    {% if message.tags == 'success' %}
+                        bg-success
+                    {% else %}
+                        bg-danger
+                    {% endif %}
+                    text-white">
+    
+                    <h5 class="modal-title">
+                        {% if message.tags == 'success' %}
+                            ✅ Login Successful
+                        {% else %}
+                            ❌ Notification
+                        {% endif %}
+                    </h5>
+    
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal"></button>
+                </div>
+    
+                <div class="modal-body text-center">
+                    <h5>{{ message }}</h5>
+                </div>
+                {% endfor %}
+    
+                <div class="modal-footer">
+                    <button class="btn btn-success"
+                            data-bs-dismiss="modal">
+                        Continue
+                    </button>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
 
 
@@ -209,6 +244,14 @@
     }
 </script>
 
-
+{% if messages %}
+<script>
+    window.onload = function () {
+        var loginModal =
+            new bootstrap.Modal(document.getElementById('loginModal'));
+        loginModal.show();
+    };
+</script>
+{% endif %}
 </body>
 </html>
