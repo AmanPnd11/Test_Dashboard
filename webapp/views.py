@@ -371,14 +371,8 @@ def subadminlogin(request):
             messages.error(request, "Invalid Email or Password")
             return redirect("subadminlogin")
 
-<<<<<<< HEAD
-    return render(request, "subadmin/subadminlogin.html")
-=======
+    return render(request, "subadmin/subadminlogin.html")        
         
-        request.session["subadmin_id"] = subadmin.id
-        request.session["department_id"] = department.id
->>>>>>> 7c78f8ed75044c3abdd1b3a819f09da5b9487f51
-
 # def subadminlogin(request):
 #      if request.method == "POST":
 #         Subadminfirstname = request.POST.get("Subadminfirstname")
