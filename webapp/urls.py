@@ -31,7 +31,7 @@ urlpatterns = [
     path('updatestudent1/<str:mail>/', views.updatestudent1, name='updatestudent1'),
     path('subadminreg/', views.subadminreg, name='subadminreg'),
     path('updatesubadmin/<int:id>/',views.updatesubadmins,name='updatesubadmins'),
-
+#     path('edit_subadmin/<int:id>/',views.edit_subadmin,name='edit_subadmin'),
 
     # SUBADMINS DASHBOARD URLS
             path('subadminlogin/', views.subadminlogin, name='subadminlogin'),

@@ -227,15 +227,19 @@
                         <th></th>
                         <td>
                             <button type="submit"
+                                    name="action"
+                                    value="update"
                                     class="btn btn-primary">
                                 Update Subadmin Profile
                             </button>
 
-                             <button type="submit"
-                                    class="btn btn-danger">
+                            <button type="submit"
+                                    name="action"
+                                    value="delete"
+                                    class="btn btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete this SubAdmin?')">
                                 Delete Subadmin Profile
                             </button>
-
                             <a href="{% url 'subadmins'%}"
                                class="btn btn-secondary">
                                 Cancel

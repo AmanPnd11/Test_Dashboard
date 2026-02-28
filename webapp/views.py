@@ -245,18 +245,29 @@ def updatestudent(request):
 
 
 def updatestudent1(request, mail):
+
     stu = get_object_or_404(studentregistration, mail=mail)
     departments = Department.objects.all()
 
     if request.method == "POST":
-        stu.username = request.POST.get('user')
-        stu.mail = request.POST.get('email')
-        stu.RollNo = request.POST.get('Rollno')
-        stu.Department.Deptcode = request.POST.get('Department.Deptcode')
-        stu.MobileNo = request.POST.get('Mobileno')
-        stu.save()
-        messages.success(request, "Student Profile Updated successfully")
-        return redirect('students')
+
+        action = request.POST.get("action")
+
+        if action == "delete":
+            stu.delete()
+            messages.success(request,"Student deleted successfully!")
+            return redirect("students")
+
+        elif action == "update":
+            stu.username = request.POST.get('user')
+            stu.mail = request.POST.get('email')
+            stu.RollNo = request.POST.get('Rollno')
+            stu.MobileNo = request.POST.get('Mobileno')
+            stu.Department_id = request.POST.get('department')
+            stu.IsActive = request.POST.get('is_active') == 'on'
+            stu.save()
+            messages.success(request,"Student Profile Updated Successfully")
+            return redirect('students')
 
     context = {
         'stu': stu,
@@ -267,26 +278,30 @@ def updatestudent1(request, mail):
 
 
 
-
-
-
 def updatesubadmins(request, id):
     subadmin = get_object_or_404(TblSubAdmin, id=id)
     departments = Department.objects.all()
 
     if request.method == "POST":
-        subadmin.Subadminfirstname = request.POST.get('firstname')
-        subadmin.Subadminlastname = request.POST.get('lastname')
-        subadmin.Subadminemail = request.POST.get('email')
-        subadmin.Subadminmobile = request.POST.get('mobile')
-        subadmin.Subadminpassword = request.POST.get('password')
-        subadmin.Department_id = request.POST.get('department')
-        subadmin.IsActive = request.POST.get('is_active') == 'on'
 
-        subadmin.save()
+        action = request.POST.get("action")
 
-        messages.success(request, "SubAdmin Profile Updated Successfully!")
-        return redirect('subadmins')
+        if action == "delete":
+            subadmin.delete()
+            messages.success(request, "SubAdmin deleted successfully!")
+            return redirect("subadmins")
+
+        elif action == "update":
+            subadmin.Subadminfirstname = request.POST.get('firstname')
+            subadmin.Subadminlastname = request.POST.get('lastname')
+            subadmin.Subadminemail = request.POST.get('email')
+            subadmin.Subadminmobile = request.POST.get('mobile')
+            subadmin.Subadminpassword = request.POST.get('password')
+            subadmin.Department_id = request.POST.get('department')
+            subadmin.IsActive = request.POST.get('is_active') == 'on'
+            subadmin.save()
+            messages.success(request,"SubAdmin Profile Updated Successfully!")
+            return redirect('subadmins')
 
     context = {
         'subadmin': subadmin,
