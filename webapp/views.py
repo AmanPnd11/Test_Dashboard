@@ -296,6 +296,9 @@ def updatesubadmins(request, id):
     return render(request, 'superadmin/updatesubadmins.html', context)
 
 
+def forgotadminprofile(request):
+
+    return render(request, 'superadmin/forgotadminprofile.html')
 
 
 

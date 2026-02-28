@@ -16,6 +16,8 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('adminlogin/', views.adminlogin, name='adminlogin'),
     path('forgotadmin/', views.forgotadmin, name='forgotadmin'),
+    path('forgotadminprofile/', views.forgotadminprofile, name='forgotadminprofile'),
+
     path('adminprofile/', views.adminprofile, name='adminprofile'),
     path('updaterec/<str:email>/', views.updaterec, name='updaterec'),
     path('students/', views.students, name='students'),
