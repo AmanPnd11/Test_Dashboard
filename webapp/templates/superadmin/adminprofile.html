@@ -5,61 +5,10 @@
 
 {% block Content %}
 
-<style>
-
-
-body{
-    background-color: var(--bs-body-bg);
-    color: var(--bs-body-color);
-    transition: 0.3s;
-}
-
-.sidebar{
-    background-color: var(--bs-tertiary-bg);
-    color: var(--bs-body-color);
-    transition: 0.3s;
-}
-
-.main{
-    background-color: var(--bs-body-bg);
-}
-
-.topbar {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.topbar h2 {
-    font-weight: 700;
-    color: #1f2937;
-}
-
-.custom-card{
-    background-color: var(--bs-card-bg);
-    color: var(--bs-body-color);
-}
-
-input,
-select,
-textarea{
-    background-color: var(--bs-body-bg);
-    color: var(--bs-body-color);
-}
-
-table{
-    color: var(--bs-body-color);
-}
-
-</style>
 
 <div class="sidebar" id="sidebar">
     <h4>Aman<br>Technologies</h4>
-    <a href="{% url 'index'%}" class="active">🏠 Home</a>
+    <a href="{% url 'index'%}" class="active"><b>🏠 Home</b></a>
     <a href="{% url 'about' %}"><b>ℹ️ About</b></a>
     <a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
     <a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
