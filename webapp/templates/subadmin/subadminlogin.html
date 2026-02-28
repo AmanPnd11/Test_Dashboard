@@ -96,14 +96,14 @@
         {% csrf_token %}
 
         <div class="mb-3">
-            <label class="form-label">First Name</label>
-            <input type="text" name="Subadminfirstname" class="form-control" placeholder="Enter First Name" required>
+            <label class="form-label">Email</label>
+            <input type="email" name="Subadminemail" class="form-control" placeholder="Enter Email" required>
         </div>
 
-        <div class="mb-3">
+        {% comment %} <div class="mb-3">
             <label class="form-label">Department</label>
             <input type="text" name="department" class="form-control" placeholder="Enter your Department" required>
-        </div>
+        </div> {% endcomment %}
 
         <div class="mb-3">
             <label class="form-label">Password</label>
