@@ -5,61 +5,10 @@
 
 {% block Content %}
 
-<style>
-
-
-body{
-    background-color: var(--bs-body-bg);
-    color: var(--bs-body-color);
-    transition: 0.3s;
-}
-
-.sidebar{
-    background-color: var(--bs-tertiary-bg);
-    color: var(--bs-body-color);
-    transition: 0.3s;
-}
-
-.main{
-    background-color: var(--bs-body-bg);
-}
-
-.topbar {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.topbar h2 {
-    font-weight: 700;
-    color: #1f2937;
-}
-
-.custom-card{
-    background-color: var(--bs-card-bg);
-    color: var(--bs-body-color);
-}
-
-input,
-select,
-textarea{
-    background-color: var(--bs-body-bg);
-    color: var(--bs-body-color);
-}
-
-table{
-    color: var(--bs-body-color);
-}
-
-</style>
 
 <div class="sidebar" id="sidebar">
-    <h4>Aman<br>Technologies</h4>
-    <a href="{% url 'index'%}" class="active">🏠 Home</a>
+    <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150"></div>
+    <a href="{% url 'index'%}" class="active"><b>🏠 Home</b></a>
     <a href="{% url 'about' %}"><b>ℹ️ About</b></a>
     <a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
     <a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
@@ -74,7 +23,7 @@ table{
 <div class="topbar mb-4">
     <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
     <h2>Hi, Admin..! Welcome to the Dashboard</h2>
-    <a href="{% url 'adminlogin'%}" class="btn btn-danger"><b>Logout</b></a>
+    <a href="{% url 'adminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
 </div>
 
 <h4 class="fw-bold mb-4">SUPER ADMIN PROFILE</h4>

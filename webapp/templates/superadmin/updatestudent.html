@@ -1,13 +1,9 @@
+{% extends "superadmin/index.html"%}
 {% load static %}
-{% comment %} <h1>ADMIN PAGE</h1> {% endcomment %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% block title %}Admin Dashboard{% endblock %}
 
-    <title>SubAdmin Dashboard</title>
-
+{% block extra_css %}
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -114,13 +110,12 @@
             }
         }
     </style>
-</head>
+{% endblock %}
 
-<body>
-    {%block Content%}
+{% block Content %}
         <div class="sidebar" id="sidebar">
-            <h4>Aman<br>Technologies</h4>
-            <a href="{% url 'index'%}" class="active">🏠 Home</a>
+            <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150"></div>           
+            <a href="{% url 'index'%}" class="active"><b>🏠 Home</b></a>
             <a href="{% url 'about' %}"><b>ℹ️ About</b></a>
             <a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
             <a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
@@ -136,7 +131,7 @@
             <div class="topbar mb-4">
                 <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
                 <h2>Hi, Admin..! Welcome to the Dashboard</h2>
-                <a href="{% url 'adminlogin'%}" class="btn btn-danger"><b>Logout</b></a>
+                <a href="{% url 'adminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
             </div>
 
             <!-- Welcome -->
@@ -229,20 +224,23 @@
                         <th></th>
                         <td>
                             <button type="submit"
+                                    name="action"
+                                    value="update"
                                     class="btn btn-primary">
                                 Update Student Profile
                             </button>
-
                             <button type="submit"
-                                    class="btn btn-danger">
-                                    Delete Student Profile
+                                    name="action"
+                                    value="delete"
+                                    class="btn btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete this student?')">
+                                Delete Student Profile
                             </button>
 
                             <a href="{% url 'students'%}"
                                class="btn btn-secondary">
                                 Cancel
                             </a>
-
                         </td>
                     </tr>
 
