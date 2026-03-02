@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,11 +12,14 @@
     <style>
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #6f74dd,rgb(90, 29, 204));
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: "Segoe UI", sans-serif;
+            /* Background Image */
+            background: url("{% static 'images/tgp1.jpg' %}") no-repeat center center;
+            background-size: cover;
+            position: relative;
         }
 
         .login-card {
@@ -100,9 +104,9 @@
     
                     <h5 class="modal-title">
                         {% if message.tags == 'success' %}
-                            ✅ Login Successful
+                            Login Successful
                         {% else %}
-                            ❌ Notification
+                            Notification
                         {% endif %}
                     </h5>
     
@@ -130,7 +134,9 @@
 
 <div class="login-card">
 
-    <div class="brand1">Aman Technologies</div>
+    <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}"
+        class="img-fluid hero-img"
+        width="200"></div>
 
     <div class="brand">🔒 Admin Login</div>
  

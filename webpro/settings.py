@@ -138,3 +138,8 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL ='/media/'
+
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 86400
+SESSION_SAVE_EVERY_REQUEST = True

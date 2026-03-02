@@ -202,9 +202,9 @@
     
                     <h5 class="modal-title">
                         {% if message.tags == 'success' %}
-                            ✅ Login Successful
+                            Login Successful
                         {% else %}
-                            ❌ Notification
+                            Notification
                         {% endif %}
                     </h5>
     
@@ -236,7 +236,7 @@
  {% block Content%}
 
 <div class="sidebar" id="sidebar">
-    <h4>Aman<br>Technologies</h4>
+    <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150" ></div>  
     <a href="{% url 'index'%}" class="active"><b>🏠 Home</b></a>
     <a href="{% url 'about' %}"><b>ℹ️ About</b></a>
     <a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
@@ -244,7 +244,6 @@
     <a href="{% url 'students'%}"><b>👤 Students</b></a>
     <a href="{% url 'studentresult'%}"><b>📊 Results</b></a>
     <a href="{% url 'adminprofile'%}"><b>👤 Admin Profile</b></a>
-    
 </div>
 
 <!-- Main Content -->
@@ -254,7 +253,7 @@
     <div class="topbar mb-4">
         <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
         <h2>Hi, {{supadms.AdminName}}..! Welcome to the Dashboard</h2>
-        <a href="{% url 'adminlogin'%}" class="btn btn-danger"><b>Logout</b></a>
+        <a href="{% url 'adminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
     </div>
 
     <!-- Welcome -->

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import TblSuperAdmin, Department, TblSubAdmin, studentregistration, Test, Subject, Question, StudentResult
-from django.contrib.auth import authenticate, login, logout
+# from django.contrib.auth import authenticate, login, logout
 
 
 
@@ -21,25 +21,53 @@ def base(request):
 
 # SUPERADMIN DASHBOARD VIEWS FUNCTIONS.-------------------------------------------------------------------
 
+# def index(request):
+#     supadms = TblSuperAdmin.objects.get()
+#     Depts = Department.objects.count()
+#     students = studentregistration.objects.count()
+#     adms = TblSubAdmin.objects.count()
+#     context = {
+#         "supadms":supadms,
+#         "Depts": Depts,
+#         "students": students,
+#         "adms":adms,
+#     }
+#     return render(request, 'superadmin/index.html', context
+#     )
+
+
+
+from .decorators import admin_required
+
+@admin_required
 def index(request):
-    supadms = TblSuperAdmin.objects.get()
+    admin_id = request.session.get("admin_id")
+    print("SESSION READ:", admin_id)
+    if not admin_id:
+        messages.error(request, "Session expired. Please login again.")
+        return redirect("adminlogin")
+    # ---Get logged-in admin-------
+    supadms = TblSuperAdmin.objects.get(id=admin_id)
+
     Depts = Department.objects.count()
     students = studentregistration.objects.count()
     adms = TblSubAdmin.objects.count()
+
     context = {
-        "supadms":supadms,
+        "supadms": supadms,
         "Depts": Depts,
         "students": students,
-        "adms":adms,
+        "adms": adms,
     }
-    return render(request, 'superadmin/index.html', context
-    )
 
-
+    return render(request, 'superadmin/index.html', context)
+    
+@admin_required
 def about(request):
   
     return render(request, 'superadmin/about.html')
 
+@admin_required
 def adminprofile(request):
     admins= TblSuperAdmin.objects.all()
     context = {
@@ -47,6 +75,8 @@ def adminprofile(request):
     }
     return render(request, 'superadmin/adminprofile.html', context)
 
+
+@admin_required
 def updaterec(request,email):
     admin = get_object_or_404(TblSuperAdmin, Email=email)
 
@@ -64,7 +94,7 @@ def updaterec(request,email):
     return redirect('adminprofile')
 
     
-
+@admin_required
 def students(request):
     students = studentregistration.objects.all()
     context= {
@@ -73,10 +103,13 @@ def students(request):
     return render(request, 'superadmin/students.html', context)
 
 
+@admin_required
 def studentresult(request):
   
     return render(request, 'superadmin/studentresult.html')
 
+
+@admin_required
 def subadmins(request):
 
     subs= TblSubAdmin.objects.all()
@@ -88,7 +121,7 @@ def subadmins(request):
     return render(request, 'superadmin/Subadmins.html', context)
 
 
-
+@admin_required
 def Department_view(request):
     if request.method == "POST":
         Deptname = request.POST.get("Deptname")
@@ -123,7 +156,7 @@ def Department_view(request):
 #     return render(request, 'superadmin/Department_update.html', context)
 
 
-
+@admin_required
 def dept_update(request):
     dept = get_object_or_404(Department, id=request.POST.get('id'))
 
@@ -139,38 +172,52 @@ def dept_update(request):
 
 
 
-from django.shortcuts import redirect
-from django.contrib.auth.hashers import make_password, check_password
-from .models import TblSuperAdmin
+# from django.shortcuts import redirect
+# from django.contrib.auth.hashers import make_password, check_password
+# from .models import TblSuperAdmin
 
-if not TblSuperAdmin.objects.filter(Role='SUPER_ADMIN').exists():
-    admin = TblSuperAdmin(
-        AdminName="Aman",
-        UserName="Admin",
-        Email="amanpande416@gmail.com",
-        MobileNumber="8484061360",
-        Password=make_password("aman_7868"),
-        Role="SUPER_ADMIN"
-    )
-    admin.save()
+# if not TblSuperAdmin.objects.filter(Role='SUPER_ADMIN').exists():
+#     admin = TblSuperAdmin(
+#         AdminName="Aman",
+#         UserName="Admin",
+#         Email="amanpande416@gmail.com",
+#         MobileNumber="8484061360",
+#         Password=make_password("Aman1"),
+#         Role="SUPER_ADMIN"
+#     )
+#     admin.save()
+
+from django.contrib.auth.hashers import check_password, make_password
 
 def adminlogin(request):
-     if request.method == "POST":
-        Email = request.POST.get("Email", "").strip()  
-        Password = request.POST.get("Password", "").strip()  
+
+    if request.method == "POST":
+        Email = request.POST.get("Email").strip()
+        Password = request.POST.get("Password").strip()
 
         try:
-            admin = TblSuperAdmin.objects.get(Email=Email, Role='SUPER_ADMIN')
+            admin = TblSuperAdmin.objects.get(
+                Email=Email,
+                Role='SUPER_ADMIN'
+            )
+
             if check_password(Password, admin.Password):
+
                 request.session["admin_id"] = admin.id
+                request.session.modified = True   
+
+                print("SESSION SET:", request.session["admin_id"])
+
                 messages.success(request, "What's Up SuperAdmin")
                 return redirect("index")
-                # messages.success(request,"What's Up SuperAdmin")
+
             else:
                 messages.error(request, "Invalid Password")
+
         except TblSuperAdmin.DoesNotExist:
-            messages.error(request, "Invalid Username")
-     return render(request, 'superadmin/adminlogin.html')
+            messages.error(request, "Invalid Email")
+
+    return render(request, 'superadmin/adminlogin.html')
 
 
 # def forgotadmin(request):
@@ -234,7 +281,7 @@ def forgotadmin(request):
     return render(request, "superadmin/forgotadmin.html")
 
 
-
+@admin_required
 def updatestudent(request):
     stus = studentregistration.objects.all()   
     context = {
@@ -243,7 +290,7 @@ def updatestudent(request):
     return render(request, 'superadmin/updatestudent.html', context)
 
 
-
+@admin_required
 def updatestudent1(request, mail):
 
     stu = get_object_or_404(studentregistration, mail=mail)
@@ -277,7 +324,7 @@ def updatestudent1(request, mail):
     return render(request, 'superadmin/updatestudent.html', context)
 
 
-
+@admin_required
 def updatesubadmins(request, id):
     subadmin = get_object_or_404(TblSubAdmin, id=id)
     departments = Department.objects.all()
@@ -315,6 +362,11 @@ def forgotadminprofile(request):
 
     return render(request, 'superadmin/forgotadminprofile.html')
 
+
+def adminlogout(request):
+    request.session.flush()   
+    messages.info(request, "Logged out successfully")
+    return redirect("adminlogin")
 
 
 # SUBADMIN REGISTRATION VIEW FUCTION----------------------------------------------------------------------------------------
