@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,16 +12,26 @@
 
     <style>
 body {
-    min-height: 100vh;
+    /* min-height: 100vh;
     background: linear-gradient(135deg, #1e3c72, #2a5298, #6f74dd);
     background-size: 300% 300%;
-    animation: gradientMove 8s ease infinite;
+    animation: gradientMove 8s ease infinite; */
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: "Segoe UI", sans-serif;
     margin: 0;
     padding: 20px;
+
+
+    background-image: url("{% static 'images/tgp_logo1.jpg' %}");
+    background-color: rgba(0,0,0,0.5);  
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: darken;
+
+
+        
 }
 
 /* Animated Gradient */
@@ -134,7 +146,9 @@ body {
 
 <div class="login-card">
 
-    <div class="brand1">Aman Technologies</div>
+    <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}"
+        class="img-fluid hero-img"
+        width="200"></div>
 
     <div class="brand">🔒 Students Login</div>
  

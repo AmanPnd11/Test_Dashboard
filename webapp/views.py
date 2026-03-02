@@ -296,6 +296,9 @@ def updatesubadmins(request, id):
     return render(request, 'superadmin/updatesubadmins.html', context)
 
 
+def forgotadminprofile(request):
+
+    return render(request, 'superadmin/forgotadminprofile.html')
 
 
 
@@ -372,8 +375,9 @@ def subadminlogin(request):
             return redirect("subadminlogin")
 
 
-    return render(request, "subadmin/subadminlogin.html")
 
+    return render(request, "subadmin/subadminlogin.html")
+    return render(request, "subadmin/subadminlogin.html")        
 
 # def subadminlogin(request):
 #      if request.method == "POST":
@@ -440,11 +444,6 @@ def forgotsubadmin(request):
 
     return render(request, 'subadmin/forgotsubadmin.html')
 
-
-
-def deptquestions(request):
-
-    return render(request,'subadmin/deptquestions.html')
 
 
 

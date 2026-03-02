@@ -16,6 +16,8 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('adminlogin/', views.adminlogin, name='adminlogin'),
     path('forgotadmin/', views.forgotadmin, name='forgotadmin'),
+    path('forgotadminprofile/', views.forgotadminprofile, name='forgotadminprofile'),
+
     path('adminprofile/', views.adminprofile, name='adminprofile'),
     path('updaterec/<str:email>/', views.updaterec, name='updaterec'),
     path('students/', views.students, name='students'),
@@ -38,7 +40,6 @@ urlpatterns = [
             path('subadminprofile/', views.subadminprofile, name='subadminprofile'),
             path('deptstudent/', views.deptstudent, name='deptstudent'),
             path('updstu/', views.updstu, name='updstu'),
-            path('deptquestions/', views.deptquestions, name='deptquestions'),
             path('subject_test_creation/', views.subject_test_creation, name='subject_test_creation'),
             path('upload_question/<int:test_id>/', views.upload_question, name='upload_question'),
             path('result_view/', views.result_view, name='result_view'),

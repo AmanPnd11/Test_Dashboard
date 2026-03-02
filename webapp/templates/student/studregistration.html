@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,12 +13,20 @@
     <style>
        body {
     min-height: 100vh;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    /* background: linear-gradient(135deg, #1e3c72, #2a5298); */
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: "Segoe UI", sans-serif;
     padding: 20px;
+
+    background-image: url("{% static 'images/tgp_logo1.jpg' %}");
+    background-color: rgba(0,0,0,0.5);  
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: darken;
+    background-attachment: fixed; 
+
 }
 
 /* ================= CARD ================= */
@@ -35,7 +45,7 @@
 .brand1 {
     font-size: 20px;
     font-weight: 600;
-    color: #6c757d;
+    color: #2a5298;
     text-align: center;
     margin-bottom: 5px;
 }
@@ -143,7 +153,7 @@ select.form-control {
 
 <div class="login-card">
 
-    <div class="brand1">Aman Technologies</div>
+    <div class="brand1"><img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img" width="200"></div>
 
     <div class="brand">🔒 Students Registration </div>
     
