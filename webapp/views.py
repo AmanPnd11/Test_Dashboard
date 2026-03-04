@@ -116,6 +116,17 @@ def studentresult(request):
     return render(request, 'superadmin/studentresult.html',context)
 
 
+def view_department_result(request, id):
+    results = StudentResult.objects.filter(Test__Department_id=id)
+    department = Department.objects.get(id=id)
+
+    context = {
+        "results": results,
+        "department": department
+    }
+    return render(request, "superadmin/view_department_result.html",context)
+
+
 @admin_required
 def subadmins(request):
 

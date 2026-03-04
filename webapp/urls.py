@@ -33,6 +33,7 @@ urlpatterns = [
     path('updatesubadmin/<int:id>/',views.updatesubadmins,name='updatesubadmins'),
 #     path('edit_subadmin/<int:id>/',views.edit_subadmin,name='edit_subadmin'),
     path('adminlogout/', views.adminlogout, name='adminlogout'),
+    path('view_department_result/<int:id>/', views.view_department_result, name='view_department_result'),
 
 
     # SUBADMINS DASHBOARD URLS
