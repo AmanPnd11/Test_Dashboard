@@ -103,10 +103,17 @@ def students(request):
     return render(request, 'superadmin/students.html', context)
 
 
+from django.db.models import Count
+
 @admin_required
 def studentresult(request):
-  
-    return render(request, 'superadmin/studentresult.html')
+      # Get departments having results
+    departments = Department.objects.annotate(result_count=Count('test')).filter(result_count__gt=0)
+
+    context = {
+        "departments": departments
+    }
+    return render(request, 'superadmin/studentresult.html',context)
 
 
 @admin_required
@@ -461,41 +468,18 @@ def subadminlogin(request):
             department = Department.objects.get(id=dept_id)
         except Department.DoesNotExist:
             messages.error(request, "Invalid Department")
-            return redirect("subadminlogin")
+            return redirect("subadminlogin")        
 
-<<<<<<< HEAD
         try:
-=======
-
-    return render(request, "subadmin/subadminlogin.html")
-    return render(request, "subadmin/subadminlogin.html")        
-
-# def subadminlogin(request):
-#      if request.method == "POST":
-#         Subadminfirstname = request.POST.get("Subadminfirstname")
-#         Subadminpassword = request.POST.get("Subadminpassword")
-#         dept_code = request.POST.get("department")
-
-    try:
->>>>>>> 81f81345ab5f838a3c35f60dd52777fa066684b4
             subadmin = TblSubAdmin.objects.get(
                 Subadminemail=email,
                 Department=department
             )
-    except TblSubAdmin.DoesNotExist:
+        except TblSubAdmin.DoesNotExist:
             messages.error(request, "Invalid login credentials")
             return redirect("subadminlogin")
 
-<<<<<<< HEAD
         if check_password(password, subadmin.Subadminpassword):
-=======
-
-    request.session["subadmin_id"] = subadmin.id
-    request.session["department_id"] = department.id
-    messages.success(request, "Welcome SubAdmin")
-    return redirect("subadmindashboard")
->>>>>>> 81f81345ab5f838a3c35f60dd52777fa066684b4
-
             request.session["subadmin_id"] = subadmin.id
             request.session["department_id"] = department.id
 
@@ -735,7 +719,6 @@ def upload_question(request, test_id):
     if not subadmin:
         return redirect('subadmin_login')
 
-    # Allow access only within same department
     test = get_object_or_404(
         Test,
         id=test_id,
@@ -756,11 +739,8 @@ def upload_question(request, test_id):
 
         return redirect('upload_question', test_id=test.id)
 
-    return render(
-        request,
-        'subadmin/upload_question.html',
-        {'test': test}
-    )
+    return render( request,'subadmin/upload_question.html', {'test': test})
+
 # @subadmin_required
 # def upload_question(request, test_id):
 #     test = get_object_or_404(Test, id=test_id)
