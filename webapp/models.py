@@ -44,7 +44,7 @@ class TblSubAdmin(models.Model):
     Subadminlastname = models.CharField(max_length=100)
     Subadminemail = models.EmailField(unique=True)
     Subadminmobile = models.CharField(max_length=15)
-    Subadminpassword = models.CharField(max_length=15)
+    Subadminpassword = models.CharField(max_length=255)
     Department = models.ForeignKey(Department, on_delete=models.CASCADE)
     IsActive = models.BooleanField(default=True) 
     CreatedAt = models.DateTimeField(auto_now_add=True)
@@ -80,15 +80,17 @@ class Subject(models.Model):
     def __str__(self):
         return self.Subjectname
 
+
 class Test(models.Model):
     test_name = models.CharField(max_length=200)
     Subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     Department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    created_by = models.ForeignKey(TblSubAdmin, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(TblSubAdmin,on_delete=models.SET_NULL,null=True,blank=True)    
     duration = models.PositiveIntegerField(help_text="Duration in minutes")
 
     def __str__(self):
         return self.test_name
+
 
 class Question(models.Model):
     Test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name="questions")

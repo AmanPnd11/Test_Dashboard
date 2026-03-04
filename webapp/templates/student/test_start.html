@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -650,12 +650,10 @@ render();
 </script>
 </body>
 </html>
+ {% endcomment %}
 
 
-
-
-
-<!-- {% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -713,9 +711,8 @@ render();
 
     <h2>{{ test.title }}</h2>
     <p><strong>Total Questions:</strong> {{ questions.count }}</p>
-    {% comment %} <p><strong>Total Marks:</strong> {{ test.total_marks }}</p> {% endcomment %}
+     <p><strong>Total Marks:</strong> {{ test.total_marks }}</p> 
 
-    <!- Timer ->
     <div class="timer">
         Time Left: <span id="time">{{ test.duration }}:00</span>
     </div>
@@ -764,7 +761,6 @@ render();
     </form>
 </div>
 
-<!- ⏱ Timer Script ->
 <script>
     let minutes = {{ test.duration }};
     let seconds = 0;
@@ -791,4 +787,4 @@ render();
 </script>
 
 </body>
-</html> -->
+</html> 
