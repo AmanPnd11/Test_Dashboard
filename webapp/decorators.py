@@ -13,3 +13,17 @@ def admin_required(view_func):
         return view_func(request, *args, **kwargs)
 
     return wrapper
+
+
+def subadmin_required(view_func):
+    def wrapper(request, *args, **kwargs):
+
+        subadmin_id = request.session.get("subadmin_id")
+
+        if not subadmin_id:
+            messages.error(request, "Please login first")
+            return redirect("subadminlogin")
+
+        return view_func(request, *args, **kwargs)
+
+    return wrapper

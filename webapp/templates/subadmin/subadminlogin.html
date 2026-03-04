@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,11 +12,14 @@
     <style>
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #6f74dd,rgb(90, 29, 204));
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: "Segoe UI", sans-serif;
+            /* Background Image */
+            background: url("{% static 'images/tgp1.jpg' %}") no-repeat center center;
+            background-size: cover;
+            position: relative;
         }
 
         .login-card {
@@ -86,8 +90,10 @@
 
 
 <div class="login-card">
-
-    <div class="brand1">TGPCET</div>
+    
+    <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}"
+        class="img-fluid hero-img"
+        width="200"></div>
 
     <div class="brand">🔒 SubAdmin Login</div>
  
@@ -100,10 +106,17 @@
             <input type="email" name="Subadminemail" class="form-control" placeholder="Enter Email" required>
         </div>
 
-        {% comment %} <div class="mb-3">
+        <div class="mb-3">
             <label class="form-label">Department</label>
-            <input type="text" name="department" class="form-control" placeholder="Enter your Department" required>
-        </div> {% endcomment %}
+        
+            <select name="department" class="form-select" required>
+                <option value="">Select Department</option>
+        
+                {% for dept in departments %}
+                  <option value="{{ dept.id }}">{{ dept.Deptname }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
         <div class="mb-3">
             <label class="form-label">Password</label>
