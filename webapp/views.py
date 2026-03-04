@@ -415,32 +415,52 @@ def subadminreg(request):
     departments = Department.objects.all()
     return render(request, "superadmin/Subadmins.html",{"depts": departments})   
 
+
+# def subadminlogin(request):
+
+#     if request.method == "POST":
+#         email = request.POST.get("Subadminemail")
+#         password = request.POST.get("Subadminpassword")
+
+#         try:
+#             # ✅ Check Email + Password
+#             subadmin = TblSubAdmin.objects.get(
+#                 Subadminemail=email,
+#                 Subadminpassword=password,
+#                 IsActive=True
+#             )
+
+#             # ✅ Store Session
+#             request.session["subadmin_id"] = subadmin.id
+#             request.session["department_id"] = subadmin.Department.id
+#             request.session["subadmin_name"] = subadmin.Subadminfirstname
+
+#             messages.success(request, "Login Successful")
+#             return redirect("subadmindashboard")
+
+#         except TblSubAdmin.DoesNotExist:
+#             messages.error(request, "Invalid Email or Password")
+#             return redirect("subadminlogin")
+
+#     departments = Department.objects.all()
+#     return render(request, "subadmin/subadminlogin.html",{"depts": departments})        
+        
 def subadminlogin(request):
+    departments = Department.objects.all()
 
     if request.method == "POST":
-        email = request.POST.get("Subadminemail")
-        password = request.POST.get("Subadminpassword")
+
+        Subadminemail = request.POST.get("Subadminemail")
+        Subadminpassword = request.POST.get("Subadminpassword")
+        dept_id = request.POST.get("department")
 
         try:
-            # ✅ Check Email + Password
-            subadmin = TblSubAdmin.objects.get(
-                Subadminemail=email,
-                Subadminpassword=password,
-                IsActive=True
-            )
-
-            # ✅ Store Session
-            request.session["subadmin_id"] = subadmin.id
-            request.session["department_id"] = subadmin.Department.id
-            request.session["subadmin_name"] = subadmin.Subadminfirstname
-
-            messages.success(request, "Login Successful")
-            return redirect("subadmindashboard")
-
-        except TblSubAdmin.DoesNotExist:
-            messages.error(request, "Invalid Email or Password")
+            department = Department.objects.get(id=dept_id)
+        except Department.DoesNotExist:
+            messages.error(request, "Invalid Department")
             return redirect("subadminlogin")
 
+<<<<<<< HEAD
 
 
     return render(request, "subadmin/subadminlogin.html")
@@ -451,30 +471,25 @@ def subadminlogin(request):
 #         Subadminfirstname = request.POST.get("Subadminfirstname")
 #         Subadminpassword = request.POST.get("Subadminpassword")
 #         dept_code = request.POST.get("department")
+=======
+        try:
+            subadmin = TblSubAdmin.objects.get(
+                Subadminemail=Subadminemail,
+                Subadminpassword=Subadminpassword,
+                Department=department
+            )
+        except TblSubAdmin.DoesNotExist:
+            messages.error(request, "Invalid login credentials")
+            return redirect("subadminlogin")
+>>>>>>> cf9ebd688aaa99874224cf069326859f62f7bab7
 
-#         try:
-#             department = Department.objects.get(Deptcode=dept_code)
-#         except Department.DoesNotExist:
-#             messages.error(request, "Invalid Department Code")
-#             return redirect("subadminlogin")
+        request.session["subadmin_id"] = subadmin.id
+        request.session["department_id"] = department.id
+        messages.success(request, "Welcome SubAdmin")
+        return redirect("subadmindashboard")
 
-#         try:
-#             subadmin = TblSubAdmin.objects.get(
-#                 Subadminfirstname=Subadminfirstname,
-#                 Subadminpassword=Subadminpassword,
-#                 Department=department
-#             )
-#         except TblSubAdmin.DoesNotExist:
-#             messages.error(request, "Invalid login credentials")
-#             return redirect("subadminlogin")
-
-#         #LOGIN SUCCESS
-#         request.session["subadmin_id"] = subadmin.id
-#         request.session["department_id"] = department.id
-
-#         messages.success(request, "What's Up Subadmin")
-#         return redirect("subadmindashboard")
-#      return render(request,'subadmin/subadminlogin.html')
+    return render( request, "subadmin/subadminlogin.html", {"departments": departments}
+    )
 
 
 
@@ -488,7 +503,9 @@ def subadminlogin(request):
 #     return render(request, 'subadmin/updatesubadmins.html', context)
 
 
+from .decorators import subadmin_required
 
+@subadmin_required
 def subadmindashboard(request):
     subadmin_id = request.session.get("subadmin_id")
     department_id = request.session.get("department_id")
@@ -513,7 +530,7 @@ def forgotsubadmin(request):
 
 
 
-
+@subadmin_required
 def deptstudent(request):
     students = studentregistration.objects.filter(Department_id=request.session.get("department_id"))
     context = {
@@ -650,6 +667,10 @@ def result_view(request):
         'results': results
     })
 
+def subadminlogout(request):
+    request.session.flush()   
+    messages.info(request, "Logged out successfully")
+    return redirect("subadminlogin")
 
 
 
