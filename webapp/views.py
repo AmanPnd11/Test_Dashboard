@@ -460,8 +460,6 @@ def subadminlogin(request):
             messages.error(request, "Invalid Department")
             return redirect("subadminlogin")
 
-<<<<<<< HEAD
-
 
     return render(request, "subadmin/subadminlogin.html")
     return render(request, "subadmin/subadminlogin.html")        
@@ -471,22 +469,22 @@ def subadminlogin(request):
 #         Subadminfirstname = request.POST.get("Subadminfirstname")
 #         Subadminpassword = request.POST.get("Subadminpassword")
 #         dept_code = request.POST.get("department")
-=======
-        try:
+
+    try:
             subadmin = TblSubAdmin.objects.get(
                 Subadminemail=Subadminemail,
                 Subadminpassword=Subadminpassword,
                 Department=department
             )
-        except TblSubAdmin.DoesNotExist:
+    except TblSubAdmin.DoesNotExist:
             messages.error(request, "Invalid login credentials")
             return redirect("subadminlogin")
->>>>>>> cf9ebd688aaa99874224cf069326859f62f7bab7
 
-        request.session["subadmin_id"] = subadmin.id
-        request.session["department_id"] = department.id
-        messages.success(request, "Welcome SubAdmin")
-        return redirect("subadmindashboard")
+
+    request.session["subadmin_id"] = subadmin.id
+    request.session["department_id"] = department.id
+    messages.success(request, "Welcome SubAdmin")
+    return redirect("subadmindashboard")
 
     return render( request, "subadmin/subadminlogin.html", {"departments": departments}
     )
