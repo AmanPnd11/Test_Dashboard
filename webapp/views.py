@@ -525,6 +525,14 @@ def subadminlogin(request):
             messages.error(request, "Invalid Department")
             return redirect("subadminlogin")        
 
+
+# def subadminlogin(request):
+#      if request.method == "POST":
+#         Subadminfirstname = request.POST.get("Subadminfirstname")
+#         Subadminpassword = request.POST.get("Subadminpassword")
+#         dept_code = request.POST.get("department")
+
+
         try:
             subadmin = TblSubAdmin.objects.get(
                 Subadminemail=email,
@@ -534,14 +542,20 @@ def subadminlogin(request):
             messages.error(request, "Invalid login credentials")
             return redirect("subadminlogin")
 
+
+
+    if check_password(password, subadmin.Subadminpassword):
+
+
         if check_password(password, subadmin.Subadminpassword):
+
             request.session["subadmin_id"] = subadmin.id
             request.session["department_id"] = department.id
 
             messages.success(request, "Welcome SubAdmin")
             return redirect("subadmindashboard")
 
-        else:
+    else:
             messages.error(request, "Invalid Password")
             return redirect("subadminlogin")
 

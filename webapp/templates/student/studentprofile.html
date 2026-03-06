@@ -136,7 +136,13 @@
            <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
            <h2>Hi, Student..! Welcome to the Dashboard</h2>
            <a href="{% url 'studentlogin'%}" class="btn btn-danger"><b>Logout</b></a>
-       </div>
+
+
+                    </div>
+                         <div class="d-flex justify-content-between align-items-center mb-3">
+                      <!-- The theme toggle button -->
+                      <button id="theme-toggle" style="background: linear-gradient(90deg, #6f74dd,rgb(90, 29, 204))" class="btn btn-primary">Switch to Dark Theme</button>
+                  </div>
    
        <!-- Welcome -->
        <h4 class="fw-bold mb-4 text-secondary">
@@ -227,10 +233,10 @@
                     <a href="{% url 'forgotstudent' %}">
                        <button type="submit" style="background: linear-gradient(90deg, #6f74dd,rgb(90, 29, 204))" class="btn btn-primary mb-3">Change Password</button>
                     </a>
-                  <div class="d-flex justify-content-between align-items-center mb-3">
-                      <!-- The theme toggle button -->
+                  <!-- <div class="d-flex justify-content-between align-items-center mb-3">
+                      <!- The theme toggle button ->
                       <button id="theme-toggle" style="background: linear-gradient(90deg, #6f74dd,rgb(90, 29, 204))" class="btn btn-primary">Switch to Dark Theme</button>
-                  </div>
+                  </div> -->
            </div>
        </div>     
    </div>
