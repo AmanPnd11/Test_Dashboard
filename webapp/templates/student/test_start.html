@@ -1,3 +1,5 @@
+
+{% comment %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -35,7 +37,7 @@
     flex-direction: column;
   }
 
-  /* ── HEADER ── */
+   /* ── HEADER ──  */
   header {
     height: var(--header-h);
     background: linear-gradient(135deg, #1a0e6b 0%, #0d9e8a 100%);
@@ -419,8 +421,8 @@
 </style>
 </head>
 <body>
-
-<!-- HEADER -->
+<!-- 
+ HEADER 
 <header>
   <h1>Tulsiramji Gaikwad-Patil College of Engineering and Technology</h1>
   <div class="subtitle">Welcome, <strong>TUSHAR GAJBHIYE</strong></div>
@@ -432,7 +434,7 @@
 
 <div class="layout">
 
-  <!-- SIDEBAR -->
+ SIDEBAR 
   <aside class="sidebar">
     <h2>Question Navigator</h2>
     <div class="nav-grid" id="navGrid"></div>
@@ -450,7 +452,7 @@
     </div>
   </aside>
 
-  <!-- MAIN -->
+   MAIN
   <main>
     <div class="test-card">
       <div class="test-title">Aptitude Test</div>
@@ -467,7 +469,7 @@
   </main>
 </div>
 
-<!-- SUBMIT MODAL -->
+SUBMIT MODAL 
 <div class="modal-overlay" id="submitModal">
   <div class="modal">
     <h2>Submit Test?</h2>
@@ -478,10 +480,10 @@
     </div>
   </div>
 </div>
+ -->
 
 
-
-
+<!-- 
 <script>
 // ── DATA ──
 const questions = [
@@ -666,13 +668,11 @@ buildNav();
 render();
 </script>
 </body>
-</html>
+</html> -->
+ {% endcomment %}
 
 
-
-
-
-<!-- {% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -730,9 +730,8 @@ render();
 
     <h2>{{ test.title }}</h2>
     <p><strong>Total Questions:</strong> {{ questions.count }}</p>
-    {% comment %} <p><strong>Total Marks:</strong> {{ test.total_marks }}</p> {% endcomment %}
+     <p><strong>Total Marks:</strong> {{ test.total_marks }}</p> 
 
-    <!- Timer ->
     <div class="timer">
         Time Left: <span id="time">{{ test.duration }}:00</span>
     </div>
@@ -781,7 +780,6 @@ render();
     </form>
 </div>
 
-<!- ⏱ Timer Script ->
 <script>
     let minutes = {{ test.duration }};
     let seconds = 0;
@@ -808,4 +806,4 @@ render();
 </script>
 
 </body>
-</html> -->
+</html> 

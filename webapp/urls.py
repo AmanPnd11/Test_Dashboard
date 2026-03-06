@@ -46,7 +46,8 @@ urlpatterns = [
             path('upload_question/<int:test_id>/', views.upload_question, name='upload_question'),
             path('result_view/', views.result_view, name='result_view'),
             path('subadminlogout/', views.subadminlogout, name='subadminlogout'),
-
+            path('forgotsubadminprofile/', views.forgotsubadminprofile, name='forgotsubadminprofile'),
+            path('subadmin_upd/<str:email>/', views.subadmin_upd, name='subadmin_upd'),
 
     # STUDENTS DASHBOARD URLS
         path('studentregistration/', views.studregistration, name='studregistration'),

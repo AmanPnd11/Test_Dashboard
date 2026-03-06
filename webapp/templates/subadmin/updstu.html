@@ -15,10 +15,10 @@
 
 {%block Content%}
 <div class="sidebar" id="sidebar">
-    <h4>TGPCET</h4>
+    <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150"></div>
     <a href="{% url 'subadmindashboard' %}" class="active">🏠 Home</a>
     <a href="{% url 'subject_test_creation' %}"><b>📘 Subject</b></a> 
-    <a href="#"><b>📊 Test </b></a>
+    {% comment %} <a href="#"><b>📊 Test </b></a> {% endcomment %}
     <a href="{% url 'deptstudent' %}"><b>👤 Students</b></a>
     <a href="{% url 'result_view'%}"><b>📊 Results</b></a>
     <a href="{% url 'subadminprofile' %}"><b>👤 SubAdmin Profile</b></a>
@@ -31,7 +31,7 @@
     <div class="topbar mb-4">
         <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
         <h2>Hi, SubAdmin..! Welcome to the Department Dashboard</h2>
-        <a href="{% url 'subadminlogin'%}" class="btn btn-danger"><b>Logout</b></a>
+        <a href="{% url 'subadminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
     </div>
 
     <!-- Welcome -->

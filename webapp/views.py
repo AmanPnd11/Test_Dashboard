@@ -371,6 +371,7 @@ def adminlogout(request):
 
 # SUBADMIN REGISTRATION VIEW FUCTION----------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------
+@admin_required
 def subadminreg(request):
     
     if request.method == "POST":
@@ -423,14 +424,12 @@ def subadminreg(request):
 #         password = request.POST.get("Subadminpassword")
 
 #         try:
-#             # ✅ Check Email + Password
 #             subadmin = TblSubAdmin.objects.get(
 #                 Subadminemail=email,
 #                 Subadminpassword=password,
 #                 IsActive=True
 #             )
 
-#             # ✅ Store Session
 #             request.session["subadmin_id"] = subadmin.id
 #             request.session["department_id"] = subadmin.Department.id
 #             request.session["subadmin_name"] = subadmin.Subadminfirstname
@@ -445,24 +444,26 @@ def subadminreg(request):
 #     departments = Department.objects.all()
 #     return render(request, "subadmin/subadminlogin.html",{"depts": departments})        
         
+
+from django.contrib.auth.hashers import check_password
+
 def subadminlogin(request):
     departments = Department.objects.all()
 
     if request.method == "POST":
 
-        Subadminemail = request.POST.get("Subadminemail")
-        Subadminpassword = request.POST.get("Subadminpassword")
+        email = request.POST.get("Subadminemail")
+        password = request.POST.get("Subadminpassword")
         dept_id = request.POST.get("department")
 
+        # ✅ Department check
         try:
             department = Department.objects.get(id=dept_id)
         except Department.DoesNotExist:
             messages.error(request, "Invalid Department")
             return redirect("subadminlogin")
 
-
-    return render(request, "subadmin/subadminlogin.html")
-    return render(request, "subadmin/subadminlogin.html")        
+     
 
 # def subadminlogin(request):
 #      if request.method == "POST":
@@ -472,8 +473,7 @@ def subadminlogin(request):
 
     try:
             subadmin = TblSubAdmin.objects.get(
-                Subadminemail=Subadminemail,
-                Subadminpassword=Subadminpassword,
+                Subadminemail=email,
                 Department=department
             )
     except TblSubAdmin.DoesNotExist:
@@ -481,17 +481,23 @@ def subadminlogin(request):
             return redirect("subadminlogin")
 
 
-    request.session["subadmin_id"] = subadmin.id
-    request.session["department_id"] = department.id
-    messages.success(request, "Welcome SubAdmin")
-    return redirect("subadmindashboard")
+    if check_password(password, subadmin.Subadminpassword):
 
-    return render( request, "subadmin/subadminlogin.html", {"departments": departments}
+            request.session["subadmin_id"] = subadmin.id
+            request.session["department_id"] = department.id
+
+            messages.success(request, "Welcome SubAdmin")
+            return redirect("subadmindashboard")
+
+    else:
+            messages.error(request, "Invalid Password")
+            return redirect("subadminlogin")
+
+    return render(
+        request,
+        "subadmin/subadminlogin.html",
+        {"departments": departments}
     )
-
-
-
-
 
 # def updatesubadmins(request):
 #     subads = TblSubAdmin.objects.all()
@@ -522,10 +528,48 @@ def subadmindashboard(request):
     })
 
 
+
+from django.contrib.auth.hashers import make_password
+
 def forgotsubadmin(request):
 
-    return render(request, 'subadmin/forgotsubadmin.html')
+    if request.method == "POST":
 
+        email = request.POST.get("email")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+
+        if new_password != confirm_password:
+            messages.error(request, "Passwords do not match")
+            return redirect("forgotsubadmin")
+
+        try:
+            subadmin = TblSubAdmin.objects.get(
+                Subadminemail=email,
+                IsActive=True
+            )
+
+            subadmin.Subadminpassword = make_password(new_password)
+            subadmin.save()
+
+            messages.success(
+                request,
+                "Password changed successfully. Please login."
+            )
+
+            return redirect("subadminlogin")
+
+        except TblSubAdmin.DoesNotExist:
+            messages.error(request, "Email not registered")
+
+    return render(request, "subadmin/forgotsubadmin.html")
+
+
+
+@subadmin_required
+def forgotsubadminprofile(request):
+
+    return render(request, 'subadmin/forgotsubadminprofile.html')
 
 
 @subadmin_required
@@ -537,6 +581,7 @@ def deptstudent(request):
     return render(request, 'subadmin/deptstudent.html', context)
 
 
+@subadmin_required
 def updstu(request):
     studs= studentregistration.objects.filter(Department_id=request.session.get("department_id"))
     context ={
@@ -545,7 +590,7 @@ def updstu(request):
     return render(request, 'subadmin/updstu.html', context)
 
 
-
+@subadmin_required
 def subadminprofile(request):
     subadmins = TblSubAdmin.objects.get(Department_id=request.session.get("department_id"))
     context= {
@@ -598,60 +643,134 @@ def get_subadmin(request):
 #         'subjects': subjects
 #     })
 
-    
+@subadmin_required
 def subject_test_creation(request):
+
     subadmin = get_subadmin(request)
     if not subadmin:
         return redirect('subadmin_login')
 
-    subjects = Subject.objects.filter(Department=subadmin.Department)
+    subjects = Subject.objects.filter(
+        Department=subadmin.Department
+    )
 
     if request.method == "POST":
         subject_name = request.POST.get('subject_name')
         test_name = request.POST.get('test_name')
         duration = request.POST.get('duration')
 
+        # Create or get subject
         subject, created = Subject.objects.get_or_create(
             Subjectname=subject_name,
             Department=subadmin.Department
         )
 
+        # Create test
         test = Test.objects.create(
             test_name=test_name,
-            Subject=subject,               
-            duration=int(duration),         
+            Subject=subject,
+            duration=int(duration),
             Department=subadmin.Department,
             created_by=subadmin
         )
 
-        return redirect('upload_question', test.id)
+        return redirect('upload_question', test_id=test.id)
 
-    return render(request, 'subadmin/subject_test_creation.html', {
-        'subjects': subjects
-    })
+    return render(
+        request,
+        'subadmin/subject_test_creation.html',
+        {'subjects': subjects}
+    )
+# @subadmin_required
+# def subject_test_creation(request):
+#     subadmin = get_subadmin(request)
+#     if not subadmin:
+#         return redirect('subadmin_login')
+
+#     subjects = Subject.objects.filter(Department=subadmin.Department)
+
+#     if request.method == "POST":
+#         subject_name = request.POST.get('subject_name')
+#         test_name = request.POST.get('test_name')
+#         duration = request.POST.get('duration')
+
+#         subject, created = Subject.objects.get_or_create(
+#             Subjectname=subject_name,
+#             Department=subadmin.Department
+#         )
+
+#         test = Test.objects.create(
+#             test_name=test_name,
+#             Subject=subject,               
+#             duration=int(duration),         
+#             Department=subadmin.Department,
+#             created_by=subadmin
+#         )
+
+#         return redirect('upload_question', test.id)
+
+#     return render(request, 'subadmin/subject_test_creation.html', {
+#         'subjects': subjects
+#     })
 
 
+
+@subadmin_required
 def upload_question(request, test_id):
-    test = get_object_or_404(Test, id=test_id)
+
+    subadmin = get_subadmin(request)
+    if not subadmin:
+        return redirect('subadmin_login')
+
+    # Allow access only within same department
+    test = get_object_or_404(
+        Test,
+        id=test_id,
+        Department=subadmin.Department
+    )
 
     if request.method == "POST":
         Question.objects.create(
             Test=test,
-            question_text=request.POST['question_text'],
-            option_a=request.POST['option_a'],
-            option_b=request.POST['option_b'],
-            option_c=request.POST['option_c'],
-            option_d=request.POST['option_d'],
-            correct_option=request.POST['correct_option'],
+            question_text=request.POST.get('question_text'),
+            option_a=request.POST.get('option_a'),
+            option_b=request.POST.get('option_b'),
+            option_c=request.POST.get('option_c'),
+            option_d=request.POST.get('option_d'),
+            correct_option=request.POST.get('correct_option'),
             marks=request.POST.get('marks', 1)
         )
+
         return redirect('upload_question', test_id=test.id)
 
-    return render(request, 'subadmin/upload_question.html', {
-        'test': test
-    })
+    return render(
+        request,
+        'subadmin/upload_question.html',
+        {'test': test}
+    )
+# @subadmin_required
+# def upload_question(request, test_id):
+#     test = get_object_or_404(Test, id=test_id)
+
+#     if request.method == "POST":
+#         Question.objects.create(
+#             Test=test,
+#             question_text=request.POST['question_text'],
+#             option_a=request.POST['option_a'],
+#             option_b=request.POST['option_b'],
+#             option_c=request.POST['option_c'],
+#             option_d=request.POST['option_d'],
+#             correct_option=request.POST['correct_option'],
+#             marks=request.POST.get('marks', 1)
+#         )
+#         return redirect('upload_question', test_id=test.id)
+
+#     return render(request, 'subadmin/upload_question.html', {
+#         'test': test
+#     })
 
 
+@subadmin_required
 def result_view(request):
     subadmin = get_subadmin(request)
     if not subadmin:
@@ -664,6 +783,41 @@ def result_view(request):
     return render(request, 'subadmin/result_view.html', {
         'results': results
     })
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import TblSubAdmin, Department
+from .decorators import subadmin_required
+
+@subadmin_required
+def subadmin_upd(request, email):
+    subadmin = get_object_or_404(
+        TblSubAdmin,
+        Subadminemail=email
+    )
+
+    departments = Department.objects.all()
+    if request.method == "POST":
+
+        subadmin.Subadminfirstname = request.POST.get("Subadminfirstname")
+        subadmin.Subadminlastname = request.POST.get("Subadminlastname")
+        subadmin.Subadminemail = request.POST.get("Subadminemail")
+        subadmin.Subadminmobile = request.POST.get("Subadminmobile")
+
+        dept_id = request.POST.get("Department")
+        if dept_id:
+            subadmin.Department = Department.objects.get(id=dept_id)
+        subadmin.save()
+        return redirect("subadminprofile")
+
+    context = {
+        "subadmins": subadmins,
+        "departments": departments
+    }
+    return render( request, "subadmin/subadmin_upd.html", context)
+
+
 
 def subadminlogout(request):
     request.session.flush()   
