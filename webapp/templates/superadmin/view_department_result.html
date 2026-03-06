@@ -1,0 +1,65 @@
+{% extends "superadmin/index.html"%}
+{% load static %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{%block Content%}
+<div class="sidebar" id="sidebar">
+    <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150"></div>  
+    <a href="{% url 'index'%}" class="active"><b>🏠 Home</b></a>
+    <a href="{% url 'about'%}"><b>ℹ️ About</b></a>
+    <a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
+    <a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
+    <a href="{% url 'students'%}"><b>👤 Students</b></a>
+    <a href="{% url 'studentresult'%}"><b>📊 Results</b></a>
+    <a href="{% url 'adminprofile'%}"><b>👤 Admin Profile</b></a>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+    
+    <!-- Topbar -->
+    <div class="topbar mb-4">
+        <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
+        <h2>Hi, Admin..! Welcome to the Dashboard</h2>
+        <a href="{% url 'adminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
+    </div>
+
+    <!-- Welcome -->
+    <h4 class="fw-bold mb-4 text-secondary">
+        Welcome to the Admin Dashboard
+    </h4>
+
+<div class="container mt-4">
+
+<h3>{{ department.Deptname }} Results</h3>
+
+<table class="table table-bordered mt-3">
+    <tr>
+        <th>Sr No.</th>
+        <th>Student</th>
+        <th>Test</th>
+        <th>Total</th>
+        <th>Obtained</th>
+        <th>Percentage</th>
+        <th>status</th>
+    </tr>
+
+    {% for res in results %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ res.studentregistration.username }}</td>
+        <td>{{ res.Test.test_name }}</td>
+        <td>{{ res.total_marks }}</td>
+        <td>{{ res.obtained_marks }}</td>
+        <td>{{ res.percentage }}</td>
+        <td>{{ res.status }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+</div>
+</div>
+
+{% endblock %}

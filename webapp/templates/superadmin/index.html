@@ -1,325 +1,391 @@
 {% load static %}
-{% comment %} <h1>ADMIN PAGE</h1> {% endcomment %}
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
 
-    <title>Admin Dashboard</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
 
-    <style>
+/* ===== GLOBAL ===== */
 
-        /* ================= GLOBAL ================= */
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
-        
-        body{
-            background:#f4f6f9;
-            font-family:"Segoe UI",sans-serif;
-            overflow-x:hidden;
-        }
-        
-        /* ================= SIDEBAR ================= */
-        .sidebar{
-            width:260px;
-            height:100vh;
-            position:fixed;
-            top:0;
-            left:0;
-            background:linear-gradient(180deg,#4f46e5,#6366f1);
-            padding:20px;
-            transition:0.4s;
-            z-index:1000;
-        }
-        
-        .sidebar h4{
-            color:#fff;
-            text-align:center;
-            margin-bottom:30px;
-            font-weight:700;
-        }
-        
-        .sidebar a{
-            display:block;
-            color:#e5e7eb;
-            text-decoration:none;
-            padding:12px 15px;
-            border-radius:8px;
-            margin-bottom:10px;
-            transition:.3s;
-        }
-        
-        .sidebar a:hover,
-        .sidebar a.active{
-            background:#fff;
-            color:#4f46e5;
-            font-weight:600;
-        }
-        
-        /* ================= MAIN ================= */
-        .main{
-            margin-left:260px;
-            padding:25px;
-            transition:.4s;
-            min-height:100vh;
-        }
-        
-        /* ================= TOPBAR ================= */
-        .topbar{
-            background:#fff;
-            border-radius:12px;
-            padding:15px 20px;
-            display:flex;
-            flex-wrap:wrap;
-            justify-content:space-between;
-            align-items:center;
-            gap:10px;
-            box-shadow:0 4px 12px rgba(0,0,0,.08);
-        }
-        
-        .topbar h2{
-            font-size:22px;
-            font-weight:700;
-            color:#1f2937;
-            margin:0;
-        }
-        
-        /* ================= CARD ================= */
-        .card-box{
-            background:#fff;
-            border-radius:18px;
-            padding:25px;
-            height:100%;
-            border-left:6px solid #4f46e5;
-            box-shadow:0 8px 20px rgba(0,0,0,.08);
-            transition:.3s;
-        }
-        
-        .card-box:hover{
-            transform:translateY(-5px);
-            box-shadow:0 12px 25px rgba(0,0,0,.15);
-        }
-        
-        .card-box h6{
-            color:#6b7280;
-            font-weight:600;
-        }
-        
-        .card-box h3{
-            color:#4f46e5;
-            font-weight:800;
-        }
-        
-        /* ================= TABLET ================= */
-        @media(max-width:991px){
-        
-        .main{
-            margin-left:0;
-        }
-        
-        .sidebar{
-            left:-260px;
-        }
-        
-        .sidebar.show{
-            left:0;
-        }
-        
-        }
-        
-        /* ================= MOBILE ================= */
-        @media(max-width:768px){
-        
-        .topbar{
-            flex-direction:column;
-            align-items:flex-start;
-        }
-        
-        .topbar h2{
-            font-size:18px;
-        }
-        
-        .main{
-            padding:15px;
-        }
-        
-        .card-box{
-            padding:18px;
-        }
-        
-        }
-        
-        /* ================= SMALL MOBILE ================= */
-        @media(max-width:576px){
-        
-        .sidebar{
-            width:230px;
-        }
-        
-        .card-box h3{
-            font-size:20px;
-        }
-        
-        }
-        
-        /* ================= LARGE SCREEN ================= */
-        @media(min-width:1400px){
-        
-        .main{
-            padding:40px 60px;
-        }
-        
-        .topbar h2{
-            font-size:26px;
-        }
-        
-        }
-        
-        </style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:#f1f5f9;
+overflow-x:hidden;
+}
+
+/* ===== SIDEBAR ===== */
+
+.sidebar{
+position:fixed;
+top:0;
+left:0;
+width:260px;
+height:100%;
+background:linear-gradient(180deg,#4f46e5,#4338ca);
+padding:25px 20px;
+transition:.4s;
+z-index:1000;
+box-shadow:4px 0 15px rgba(0,0,0,0.1);
+}
+
+.brand1{
+text-align:center;
+margin-bottom:25px;
+}
+
+.sidebar a{
+display:block;
+color:#e5e7eb;
+padding:12px 15px;
+border-radius:10px;
+margin-bottom:10px;
+text-decoration:none;
+font-weight:500;
+transition:.3s;
+}
+
+.sidebar a:hover{
+background:#fff;
+color:#4f46e5;
+transform:translateX(5px);
+}
+
+.sidebar a.active{
+background:#fff;
+color:#4f46e5;
+font-weight:600;
+}
+
+/* ===== MAIN ===== */
+
+.main{
+margin-left:260px;
+padding:30px;
+transition:.4s;
+min-height:100vh;
+}
+
+/* ===== TOPBAR ===== */
+
+.topbar{
+background:#fff;
+padding:15px 20px;
+border-radius:14px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+margin-bottom:30px;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.topbar h2{
+font-size:22px;
+font-weight:700;
+color:#1e293b;
+}
+
+/* ===== DASHBOARD CARDS ===== */
+
+.card-box{
+background:#fff;
+border-radius:18px;
+padding:30px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+transition:.4s;
+position:relative;
+overflow:hidden;
+}
+
+.card-box::before{
+content:'';
+position:absolute;
+top:0;
+left:0;
+width:6px;
+height:100%;
+background:#4f46e5;
+}
+
+.card-box:hover{
+transform:translateY(-8px);
+box-shadow:0 15px 35px rgba(0,0,0,0.15);
+}
+
+.card-box h6{
+color:#64748b;
+font-weight:600;
+margin-bottom:10px;
+}
+
+.card-box h3{
+font-size:32px;
+color:#4f46e5;
+font-weight:800;
+}
+
+/* ===== ANIMATION ===== */
+
+.card-box{
+animation:fadeUp .7s ease;
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:768px){
+
+.sidebar{
+left:-260px;
+}
+
+.sidebar.show{
+left:0;
+}
+
+.main{
+margin-left:0;
+}
+
+}
+
+/* ===== SMALL MOBILE ===== */
+
+@media(max-width:600px){
+
+.topbar{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.topbar h2{
+font-size:18px;
+}
+
+.card-box{
+padding:20px;
+}
+
+.card-box h3{
+font-size:24px;
+}
+
+}
+
+</style>
 </head>
+
 <body>
-    {% if messages %}
-    <div class="modal fade" id="loginModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-    
-                {% for message in messages %}
-                <div class="modal-header 
-                    {% if message.tags == 'success' %}
-                        bg-success
-                    {% else %}
-                        bg-danger
-                    {% endif %}
-                    text-white">
-    
-                    <h5 class="modal-title">
-                        {% if message.tags == 'success' %}
-                            Login Successful
-                        {% else %}
-                            Notification
-                        {% endif %}
-                    </h5>
-    
-                    <button type="button"
-                            class="btn-close btn-close-white"
-                            data-bs-dismiss="modal"></button>
-                </div>
-    
-                <div class="modal-body text-center">
-                    <h5>{{ message }}</h5>
-                </div>
-                {% endfor %}
-    
-                <div class="modal-footer">
-                    <button class="btn btn-success"
-                            data-bs-dismiss="modal">
-                        Continue
-                    </button>
-                </div>
-    
-            </div>
-        </div>
-    </div>
-    {% endif %}
+
+{% if messages %}
+<div class="modal fade" id="loginModal" tabindex="-1">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+
+{% for message in messages %}
+
+<div class="modal-header 
+{% if message.tags == 'success' %}
+bg-success
+{% else %}
+bg-danger
+{% endif %}
+text-white">
+
+<h5 class="modal-title">
+{% if message.tags == 'success' %}
+Login Successful
+{% else %}
+Notification
+{% endif %}
+</h5>
+
+<button type="button"
+class="btn-close btn-close-white"
+data-bs-dismiss="modal"></button>
+
+</div>
+
+<div class="modal-body text-center">
+<h5>{{ message }}</h5>
+</div>
+
+{% endfor %}
+
+<div class="modal-footer">
+<button class="btn btn-success" data-bs-dismiss="modal">
+Continue
+</button>
+</div>
+
+</div>
+</div>
+</div>
+{% endif %}
 
 
 
-<!-- Sidebar -->
- {% block Content%}
+{% block Content %}
+
+<!-- ===== SIDEBAR ===== -->
 
 <div class="sidebar" id="sidebar">
-    <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150" ></div>  
-    <a href="{% url 'index'%}" class="active"><b>🏠 Home</b></a>
-    <a href="{% url 'about' %}"><b>ℹ️ About</b></a>
-    <a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
-    <a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
-    <a href="{% url 'students'%}"><b>👤 Students</b></a>
-    <a href="{% url 'studentresult'%}"><b>📊 Results</b></a>
-    <a href="{% url 'adminprofile'%}"><b>👤 Admin Profile</b></a>
+
+<div class="brand1">
+<img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid mb-3" width="150">
 </div>
 
-<!-- Main Content -->
+<a href="{% url 'index'%}" class="active"><b>🏠 Home</b></a>
+<a href="{% url 'about' %}"><b>ℹ️ About</b></a>
+<a href="{% url 'Department_view'%}"><b>🏢 Departments</b></a>
+<a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
+<a href="{% url 'students'%}"><b>🎓 Students</b></a>
+<a href="{% url 'studentresult'%}"><b>📊 Results</b></a>
+<a href="{% url 'adminprofile'%}"><b>👤 Admin Profile</b></a>
+
+</div>
+
+
+
+<!-- ===== MAIN ===== -->
+
 <div class="main">
-    
-    <!-- Topbar -->
-    <div class="topbar mb-4">
-        <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
-        <h2>Hi, {{supadms.AdminName}}..! Welcome to the Dashboard</h2>
-        <a href="{% url 'adminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
-    </div>
 
-    <!-- Welcome -->
-    <h4 class="fw-bold mb-4 text-secondary">
-        Welcome to the Admin Dashboard
-    </h4>
+<!-- TOPBAR -->
 
-    <!-- Cards -->
-    <div class="row g-4 mb-3">
-        <div class="col-lg-4 col-md-6">
-            <div class="card-box">
-                <h6>Total SubAdmins </h6>
-                <h3>{{adms}} SubAdmins</h3>
-                <p class="text-muted mb-0">
-                    Total registered users in the system.
-                </p>
-            </div>
-        </div>
-    </div>
+<div class="topbar">
 
+<button class="btn btn-outline-primary d-md-none"
+onclick="toggleSidebar()">☰</button>
 
-    <div class="row g-4 mb-3">
-        <div class="col-lg-4 col-md-6">
-            <div class="card-box">
-                <h6>Total Departments </h6>
-                <h3>{{Depts}} Departments</h3>
-                <p class="text-muted mb-0">
-                    Total Departments in the system.
-                </p>
-            </div>
-        </div>
-    </div>
+<h2>Hi, {{supadms.AdminName}}..! Welcome to the Dashboard</h2>
 
-
-    <div class="row g-4 mb-3">
-        <div class="col-lg-4 col-md-6">
-            <div class="card-box">
-                <h6>Total Registered Student</h6>
-                <h3>{{ students}} Students</h3>
-                <p class="text-muted mb-0">
-                    Total registered users in the system.
-                </p>
-            </div>
-        </div>
-    </div>
+<a href="{% url 'adminlogout'%}" class="btn btn-danger">
+<b>Logout</b>
+</a>
 
 </div>
+
+
+
+<h4 class="fw-bold mb-4 text-secondary">
+Welcome to the Admin Dashboard
+</h4>
+
+
+
+<!-- CARDS -->
+
+<div class="row g-4">
+
+<div class="col-lg-4 col-md-6">
+
+<div class="card-box">
+
+<h6>Total SubAdmins</h6>
+
+<h3>{{adms}} SubAdmins</h3>
+
+<p class="text-muted mb-0">
+Total registered users in the system.
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="col-lg-4 col-md-6">
+
+<div class="card-box">
+
+<h6>Total Departments</h6>
+
+<h3>{{Depts}} Departments</h3>
+
+<p class="text-muted mb-0">
+Total departments in the system.
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="col-lg-4 col-md-6">
+
+<div class="card-box">
+
+<h6>Total Registered Student</h6>
+
+<h3>{{ students}} Students</h3>
+
+<p class="text-muted mb-0">
+Total registered students in the system.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 {% endblock %}
-<!-- Bootstrap JS -->
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Sidebar Toggle -->
 <script>
-    function toggleSidebar() {
-        document.getElementById("sidebar").classList.toggle("show");
-    }
+
+function toggleSidebar(){
+document.getElementById("sidebar").classList.toggle("show");
+}
+
 </script>
+
+
 
 {% if messages %}
 <script>
-    window.onload = function () {
-        var loginModal =
-            new bootstrap.Modal(document.getElementById('loginModal'));
-        loginModal.show();
-    };
+
+window.onload=function(){
+
+var loginModal=new bootstrap.Modal(
+document.getElementById('loginModal')
+);
+
+loginModal.show();
+
+};
+
 </script>
 {% endif %}
+
 </body>
 </html>

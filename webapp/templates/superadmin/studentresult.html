@@ -30,5 +30,48 @@
         Welcome to the Admin Dashboard
     </h4>
 
-</div>
-{%endblock%}
+    
+    
+    
+        <h3 class="mb-4 text-center">
+            Department Wise Results
+        </h3>
+    
+        <div class="row">
+    
+            {% for dept in departments %}
+    
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg border-0 h-100">
+    
+                    <div class="card-body text-center">
+    
+                        <h5 class="card-title">
+                            {{ dept.Deptname }}
+                        </h5>
+    
+                        <p class="text-muted">
+                            Total Results :
+                            <b>{{ dept.result_count }}</b>
+                        </p>
+    
+                        <a href="{% url 'view_department_result' dept.id %}"
+                           class="btn btn-primary">
+                            View Results
+                        </a>
+    
+                    </div>
+    
+                </div>
+            </div>
+    
+            {% empty %}
+                <h5 class="text-center text-danger">
+                    No Department Results Available
+                </h5>
+            {% endfor %}
+    
+        </div>
+        
+    {% endblock %}
+    {% comment %} {% url 'view_department_result' dept.id %} {% endcomment %}

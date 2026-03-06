@@ -33,6 +33,7 @@ urlpatterns = [
     path('updatesubadmin/<int:id>/',views.updatesubadmins,name='updatesubadmins'),
 #     path('edit_subadmin/<int:id>/',views.edit_subadmin,name='edit_subadmin'),
     path('adminlogout/', views.adminlogout, name='adminlogout'),
+    path('view_department_result/<int:id>/', views.view_department_result, name='view_department_result'),
 
 
     # SUBADMINS DASHBOARD URLS
@@ -41,7 +42,7 @@ urlpatterns = [
             path('subadmindashboard/', views.subadmindashboard, name='subadmindashboard'),
             path('subadminprofile/', views.subadminprofile, name='subadminprofile'),
             path('deptstudent/', views.deptstudent, name='deptstudent'),
-            path('updstu/', views.updstu, name='updstu'),
+            path('updstu/<int:id>/', views.updstu, name='updstu'),
             path('subject_test_creation/', views.subject_test_creation, name='subject_test_creation'),
             path('upload_question/<int:test_id>/', views.upload_question, name='upload_question'),
             path('result_view/', views.result_view, name='result_view'),

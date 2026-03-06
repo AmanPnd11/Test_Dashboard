@@ -103,10 +103,28 @@ def students(request):
     return render(request, 'superadmin/students.html', context)
 
 
+from django.db.models import Count
+
 @admin_required
 def studentresult(request):
-  
-    return render(request, 'superadmin/studentresult.html')
+      # Get departments having results
+    departments = Department.objects.annotate(result_count=Count('test')).filter(result_count__gt=0)
+
+    context = {
+        "departments": departments
+    }
+    return render(request, 'superadmin/studentresult.html',context)
+
+@admin_required
+def view_department_result(request, id):
+    results = StudentResult.objects.filter(Test__Department_id=id)
+    department = Department.objects.get(id=id)
+
+    context = {
+        "results": results,
+        "department": department
+    }
+    return render(request, "superadmin/view_department_result.html",context)
 
 
 @admin_required
@@ -461,9 +479,8 @@ def subadminlogin(request):
             department = Department.objects.get(id=dept_id)
         except Department.DoesNotExist:
             messages.error(request, "Invalid Department")
-            return redirect("subadminlogin")
+            return redirect("subadminlogin")        
 
-     
 
 # def subadminlogin(request):
 #      if request.method == "POST":
@@ -471,17 +488,22 @@ def subadminlogin(request):
 #         Subadminpassword = request.POST.get("Subadminpassword")
 #         dept_code = request.POST.get("department")
 
-    try:
+
+        try:
             subadmin = TblSubAdmin.objects.get(
                 Subadminemail=email,
                 Department=department
             )
-    except TblSubAdmin.DoesNotExist:
+        except TblSubAdmin.DoesNotExist:
             messages.error(request, "Invalid login credentials")
             return redirect("subadminlogin")
 
 
+
     if check_password(password, subadmin.Subadminpassword):
+
+
+        if check_password(password, subadmin.Subadminpassword):
 
             request.session["subadmin_id"] = subadmin.id
             request.session["department_id"] = department.id
@@ -568,6 +590,34 @@ def forgotsubadmin(request):
 
 @subadmin_required
 def forgotsubadminprofile(request):
+    if request.method == "POST":
+
+        email = request.POST.get("email")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+
+        if new_password != confirm_password:
+            messages.error(request, "Passwords do not match")
+            return redirect("forgotsubadmin")
+
+        try:
+            subadmin = TblSubAdmin.objects.get(
+                Subadminemail=email,
+                IsActive=True
+            )
+
+            subadmin.Subadminpassword = make_password(new_password)
+            subadmin.save()
+
+            messages.success(
+                request,
+                "Password changed successfully. Please login."
+            )
+
+            return redirect("subadminlogin")
+
+        except TblSubAdmin.DoesNotExist:
+            messages.error(request, "Email not registered")
 
     return render(request, 'subadmin/forgotsubadminprofile.html')
 
@@ -582,11 +632,35 @@ def deptstudent(request):
 
 
 @subadmin_required
-def updstu(request):
-    studs= studentregistration.objects.filter(Department_id=request.session.get("department_id"))
-    context ={
-        "studs": studs,
+def updstu(request, id):
+    students = get_object_or_404(studentregistration, id=id)
+    departments = Department.objects.all()
+
+    if request.method == "POST":
+
+        action = request.POST.get("action")
+
+        if action == "delete":
+            students.delete()
+            messages.success(request, "SubAdmin deleted successfully!")
+            return redirect("deptstudent")
+
+        elif action == "update":
+            students.username = request.POST.get('username')
+            students.mail = request.POST.get('mail')
+            students.RollNo = request.POST.get('RollNo')
+            students.Department_id = request.POST.get('Department')
+            students.MobileNo = request.POST.get('MobileNo')
+            students.IsActive = request.POST.get('is_active') == 'on'
+            students.save()
+            messages.success(request,"SubAdmin Profile Updated Successfully!")
+            return redirect('deptstudent')
+
+    context = {
+        'students': students,
+        'departments': departments
     }
+
     return render(request, 'subadmin/updstu.html', context)
 
 
@@ -722,7 +796,6 @@ def upload_question(request, test_id):
     if not subadmin:
         return redirect('subadmin_login')
 
-    # Allow access only within same department
     test = get_object_or_404(
         Test,
         id=test_id,
@@ -743,11 +816,8 @@ def upload_question(request, test_id):
 
         return redirect('upload_question', test_id=test.id)
 
-    return render(
-        request,
-        'subadmin/upload_question.html',
-        {'test': test}
-    )
+    return render( request,'subadmin/upload_question.html', {'test': test})
+
 # @subadmin_required
 # def upload_question(request, test_id):
 #     test = get_object_or_404(Test, id=test_id)
@@ -816,6 +886,7 @@ def subadmin_upd(request, email):
         "departments": departments
     }
     return render( request, "subadmin/subadmin_upd.html", context)
+
 
 
 

@@ -102,17 +102,17 @@
 
         <div class="mb-3">
             <label class="form-label">Email</label>
-            <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
+            <input type="email" name="email" class="form-control" placeholder="Enter your Email" required>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Create New Password</label>
-            <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+            <input type="password" name="new_password" class="form-control" placeholder="Enter your New Password" required>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Confirm New Password</label>
-            <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+            <input type="password" name="confirm_password" class="form-control" placeholder="Enter your Confirm Password" required>
         </div>
 
         {% if error %}
@@ -134,7 +134,7 @@
     <div class="extra-links text-center mt-4">
 
         <p>
-            <a href="{% url 'subadmindashboard'%}">Back!</a>
+            <a href="{% url 'subadminprofile'%}">Back!</a>
         </p>
     </div>
 </div>
