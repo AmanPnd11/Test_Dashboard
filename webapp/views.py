@@ -387,6 +387,50 @@ def adminlogout(request):
     return redirect("adminlogin")
 
 
+    
+
+
+# from django.shortcuts import render
+# import plotly.graph_objects as go
+# from django.db.models import Avg
+# from .models import StudentResult
+
+# def department_performance(request):
+
+#     # Get average marks per department
+#     results = (
+#         StudentResult.objects
+#         .values('studentregistration__Department__Deptname')
+#         .annotate(avg_marks=Avg('obtained_marks'))
+#     )
+
+#     departments = []
+#     marks = []
+
+#     for r in results:
+#         departments.append(r['studentregistration__Department__Deptname'])
+#         marks.append(r['avg_marks'])
+
+#     # Create Plotly Bar Chart
+#     fig = go.Figure(data=[
+#         go.Bar(x=departments, y=marks)
+#     ])
+
+#     fig.update_layout(
+#         title="Department Performance Based on Marks",
+#         xaxis_title="Department",
+#         yaxis_title="Average Marks"
+#     )
+
+#     chart = fig.to_html()
+
+#     return render(request, "superadmin/department_performance.html", {"chart": chart})
+
+
+
+
+
+
 # SUBADMIN REGISTRATION VIEW FUCTION----------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------
 @admin_required
