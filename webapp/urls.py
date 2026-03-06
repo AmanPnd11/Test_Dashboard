@@ -34,6 +34,7 @@ urlpatterns = [
 #     path('edit_subadmin/<int:id>/',views.edit_subadmin,name='edit_subadmin'),
     path('adminlogout/', views.adminlogout, name='adminlogout'),
     path('view_department_result/<int:id>/', views.view_department_result, name='view_department_result'),
+#     path('department-performance/', views.department_performance, name='department_performance'),
 
 
     # SUBADMINS DASHBOARD URLS
