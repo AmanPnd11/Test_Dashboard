@@ -115,7 +115,7 @@ def studentresult(request):
     }
     return render(request, 'superadmin/studentresult.html',context)
 
-
+@admin_required
 def view_department_result(request, id):
     results = StudentResult.objects.filter(Test__Department_id=id)
     department = Department.objects.get(id=id)
@@ -576,6 +576,34 @@ def forgotsubadmin(request):
 
 @subadmin_required
 def forgotsubadminprofile(request):
+    if request.method == "POST":
+
+        email = request.POST.get("email")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+
+        if new_password != confirm_password:
+            messages.error(request, "Passwords do not match")
+            return redirect("forgotsubadmin")
+
+        try:
+            subadmin = TblSubAdmin.objects.get(
+                Subadminemail=email,
+                IsActive=True
+            )
+
+            subadmin.Subadminpassword = make_password(new_password)
+            subadmin.save()
+
+            messages.success(
+                request,
+                "Password changed successfully. Please login."
+            )
+
+            return redirect("subadminlogin")
+
+        except TblSubAdmin.DoesNotExist:
+            messages.error(request, "Email not registered")
 
     return render(request, 'subadmin/forgotsubadminprofile.html')
 
@@ -590,11 +618,35 @@ def deptstudent(request):
 
 
 @subadmin_required
-def updstu(request):
-    studs= studentregistration.objects.filter(Department_id=request.session.get("department_id"))
-    context ={
-        "studs": studs,
+def updstu(request, id):
+    students = get_object_or_404(studentregistration, id=id)
+    departments = Department.objects.all()
+
+    if request.method == "POST":
+
+        action = request.POST.get("action")
+
+        if action == "delete":
+            students.delete()
+            messages.success(request, "SubAdmin deleted successfully!")
+            return redirect("deptstudent")
+
+        elif action == "update":
+            students.username = request.POST.get('username')
+            students.mail = request.POST.get('mail')
+            students.RollNo = request.POST.get('RollNo')
+            students.Department_id = request.POST.get('Department')
+            students.MobileNo = request.POST.get('MobileNo')
+            students.IsActive = request.POST.get('is_active') == 'on'
+            students.save()
+            messages.success(request,"SubAdmin Profile Updated Successfully!")
+            return redirect('deptstudent')
+
+    context = {
+        'students': students,
+        'departments': departments
     }
+
     return render(request, 'subadmin/updstu.html', context)
 
 
@@ -820,6 +872,7 @@ def subadmin_upd(request, email):
         "departments": departments
     }
     return render( request, "subadmin/subadmin_upd.html", context)
+
 
 
 

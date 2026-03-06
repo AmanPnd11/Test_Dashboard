@@ -170,11 +170,8 @@
                                  <td>{{st.Department.Deptcode}}</td>
                                  <td>{{st.MobileNo}}</td>
                                  <td><div class="mb-3">
-                                    <a href="{% url 'updstu' %}" class="btn btn-danger"><b>UPDATE </b></a>
+                                    <a href="{% url 'updstu' st.id %}" class="btn btn-danger"><b>Edit </b></a>
                                  </div>
-                                  <div> 
-                                    <a href="#" class="btn btn-danger"><b>DELETE </b></a>
-                                  </div>
                                  </td>
                                {% endfor %}
                          </tbody>
