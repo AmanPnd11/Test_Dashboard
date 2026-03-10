@@ -543,10 +543,6 @@ def subadminlogin(request):
             return redirect("subadminlogin")
 
 
-
-    if check_password(password, subadmin.Subadminpassword):
-
-
         if check_password(password, subadmin.Subadminpassword):
 
             request.session["subadmin_id"] = subadmin.id
@@ -555,7 +551,7 @@ def subadminlogin(request):
             messages.success(request, "Welcome SubAdmin")
             return redirect("subadmindashboard")
 
-    else:
+        else:
             messages.error(request, "Invalid Password")
             return redirect("subadminlogin")
 
