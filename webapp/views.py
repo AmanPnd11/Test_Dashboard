@@ -1016,9 +1016,8 @@ def studentlogin(request):
 
                 request.session["dept_id"] = student.Department.id
                 request.session["dept_code"] = student.Department.Deptcode
-
                 messages.success(request, "Welcome")
-                return redirect("studentdashboard")
+                return redirect("studentdashboard") 
 
             else:
                 messages.error(request, "Invalid Password")
@@ -1028,8 +1027,9 @@ def studentlogin(request):
 
     return render(request, 'student/studentlogin.html')
 
+from .decorators import student_required
 
-
+@student_required
 def studentdashboard(request):
     student = studentregistration.objects.get(id=request.session.get("student_id"))
     context = {
@@ -1037,7 +1037,7 @@ def studentdashboard(request):
     }
     return render(request, 'student/studentdashboard.html', context)
 
-
+@student_required
 def studentprofile(request):
     st = studentregistration.objects.get(id=request.session.get("student_id"))
     context ={
@@ -1045,7 +1045,7 @@ def studentprofile(request):
     }
     return render(request, 'student/studentprofile.html', context)
 
-
+@student_required
 def test(request):
     tets = Test.objects.filter(Department_id=request.session.get("dept_id"))
     context = {
@@ -1053,7 +1053,7 @@ def test(request):
     }
     return render(request, 'student/test.html', context)
 
-
+@student_required
 def Result(request):
     
     return render(request, 'student/Result.html')
@@ -1087,7 +1087,7 @@ def forgotstudent(request):
 
     return render(request, "student/forgotstudent.html")
 
-
+@student_required
 def test_start(request, test_id):
     test = Test.objects.get(id=test_id)
     questions = Question.objects.filter(Test_id=test_id)
@@ -1102,7 +1102,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Test, Question, StudentResult
 from .models import studentregistration
 
-
+@student_required
 def test_submit(request, test_id):
 
     test = get_object_or_404(Test, id=test_id)
@@ -1146,6 +1146,11 @@ def test_submit(request, test_id):
 
     return redirect("test")
 
+
+def studentlogout(request):
+    request.session.flush()   
+    messages.info(request, "Logged out successfully")
+    return redirect("studentlogin")
 
 def facultylogin(request):
     return render(request, 'student/facultylogin.html')
