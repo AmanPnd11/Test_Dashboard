@@ -1161,7 +1161,7 @@ def test_submit(request, test_id):
 
         return redirect("test_submit", test_id)
 
-    return redirect("test")
+    return redirect("Result")
 
 
 def studentlogout(request):
