@@ -1,0 +1,159 @@
+ {% extends "student/studentdashboard.html" %}
+{% comment %} {% comment %} {% comment %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="text-center mb-4">My Test Results</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Test Name</th>
+                <th>Total Questions</th>
+                <th>Total Marks</th>
+                <th>Obtained Marks</th>
+                <th>Percentage</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for result in results %}
+
+            <tr>
+                <td>{{ result.Test.test_name }}</td>
+                <td>{{ result.total_questions }}</td>
+                <td>{{ result.total_marks }}</td>
+                <td>{{ result.obtained_marks }}</td>
+                <td>{{ result.percentage }}%</td>
+
+                <td>
+                    {% if result.status == "Pass" %}
+                        <span class="badge bg-success">Pass</span>
+                    {% else %}
+                        <span class="badge bg-danger">Fail</span>
+                    {% endif %}
+                </td>
+
+                <td>{{ result.CreatedAt|date:"d M Y" }}</td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+                <td colspan="7" class="text-center text-danger">
+                    No Results Available
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
+
+
+
+ {% endcomment %} 
+
+
+
+
+
+{% load static %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{%block content%}
+<div class="sidebar" id="sidebar">
+    <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150"></div>  
+    <a href="{% url 'studentdashboard' %}" class="active"><b>🏠 Home</b></a>
+       <a href="{% url 'test' %}"><b> Test</b></a>
+       <a href="{% url 'Result' %}"><b>Results</b></a>
+       <a href="{% url 'studentprofile' %}"><b>Student Profile</b></a>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+    
+    <!-- Topbar -->
+    <div class="topbar mb-4">
+        <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
+        <h2>Hi, Student..! Welcome to the Dashboard</h2>
+        <a href="{% url 'studentlogout'%}" class="btn btn-danger"><b>Logout</b></a>
+    </div>
+
+    <!-- Welcome -->
+    <h4 class="fw-bold mb-4 text-secondary">
+        Welcome to the Student Dashboard
+    </h4>
+
+    
+        <h3 class="mb-4 text-center">
+            My Test Results
+        </h3>
+    
+        <div class="container mt-4">
+        
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Test Name</th>
+                        <th>Total Questions</th>
+                        <th>Total Marks</th>
+                        <th>Obtained Marks</th>
+                        <th>Percentage</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+        
+                <tbody>
+        
+                {% for result in results %}
+        
+                    <tr>
+                        <td>{{ result.Test.test_name }}</td>
+                        <td>{{ result.total_questions }}</td>
+                        <td>{{ result.total_marks }}</td>
+                        <td>{{ result.obtained_marks }}</td>
+                        <td>{{ result.percentage }}%</td>
+        
+                        <td>
+                            {% if result.status == "Pass" %}
+                                <span class="badge bg-success">Pass</span>
+                            {% else %}
+                                <span class="badge bg-danger">Fail</span>
+                            {% endif %}
+                        </td>
+        
+                        <td>{{ result.CreatedAt|date:"d M Y" }}</td>
+        
+                    </tr>
+        
+                {% empty %}
+        
+                    <tr>
+                        <td colspan="7" class="text-center text-danger">
+                            No Results Available
+                        </td>
+                    </tr>
+        
+                {% endfor %}
+        
+                </tbody>
+            </table>
+        
+        </div>
+        
+{% endblock %}
+    {% comment %} {% url 'view_department_result' dept.id %} {% endcomment %}

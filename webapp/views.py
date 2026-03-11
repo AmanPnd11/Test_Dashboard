@@ -1055,8 +1055,25 @@ def test(request):
 
 @student_required
 def Result(request):
+    student_id = request.session.get("student_id")
+
+    if not student_id:
+        return redirect('student_login')
+
+    try:
+        student = studentregistration.objects.get(id=student_id)
+    except studentregistration.DoesNotExist:
+        return redirect('student_login')
+
+    results = StudentResult.objects.filter(studentregistration=student).select_related('Test')
+
+    context = {
+        'student': student,
+        'results': results
+    }
+
+    return render(request, "student/Result.html", context)
     
-    return render(request, 'student/Result.html')
 
 
 def forgotstudent(request):

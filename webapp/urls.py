@@ -67,8 +67,7 @@ urlpatterns = [
         path('test_submit/<int:test_id>/', views.test_submit, name='test_submit'),
         path('studentlogout/', views.studentlogout, name='studentlogout'),
         path('facultylogin/', views.facultylogin, name='facultylogin'),
-        
-    
+        path('Result/', views.Result, name='Result'),    
 
 
 
