@@ -1,46 +1,210 @@
 {% extends "superadmin/index.html"%}
 {% load static %}
 
-
 {% block title %}Admin Dashboard{% endblock %}
 
-    
-{%block Content%}
-        <div class="sidebar" id="sidebar">
-            <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150"></div>           
-            <a href="{% url 'index'%}" class="active"><b>🏠 Home</b></a>
-            <a href="{% url 'about'%}"><b>ℹ️ About</b></a>
-            <a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
-            <a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
-            <a href="{% url 'students'%}"><b>👤 Students</b></a>
-            <a href="{% url 'studentresult'%}"><b>📊 Results</b></a>
-            <a href="{% url 'adminprofile'%}"><b>👤 Admin Profile</b></a>
-        </div>
- 
-            <!-- Main Content -->
-            <div class="main">
-                
-                <!-- Topbar -->
-                <div class="topbar mb-4">
-                    <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
-                    <h2>Hi, Admin..! Welcome to the Dashboard</h2>
-                    <a href="{% url 'adminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
-                </div>
-            
-                <!-- Welcome -->
-                <h4 class="fw-bold mb-4 text-secondary">
-                    Welcome to the Admin Dashboard
-                </h4>
-                <h5><i><b>Aman Technologies is a forward-thinking technology company dedicated to building smart, scalable, and reliable digital solutions. We specialize in transforming ideas into powerful software products that help businesses grow, adapt, and succeed in a rapidly evolving digital world.
-            
-                    Founded with a vision to simplify technology and make it accessible, Aman Technology focuses on delivering high-quality solutions with precision, innovation, and integrity. From web applications and enterprise systems to customized software development, we combine technical expertise with creative problem-solving to deliver results that truly matter.
-                    
-                    At Aman Technology, we believe technology should solve real problems, not create complexity. Our approach is client-centric — we listen, analyze, and design solutions that align perfectly with business goals. Every project we undertake is driven by performance, security, and long-term scalability.
-                    
-                    Our team is passionate about continuous learning and innovation, ensuring we stay ahead of industry trends and deliver modern, future-ready solutions. Whether you are a startup, an educational institution, or an enterprise, Aman Technology is your trusted partner for digital excellence.
-                </b></i></h5>
-            
-            </div>
+{% block Content %}
 
-    {%endblock%}
+<style>
 
+/* GLOBAL */
+body{
+    background:#f4f6fb;
+    font-family:'Segoe UI',sans-serif;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:260px;
+    height:100vh;
+    position:fixed;
+    left:0;
+    top:0;
+    background:linear-gradient(180deg,#4f46e5,#6366f1);
+    padding:25px 20px;
+    transition:0.4s;
+    box-shadow:4px 0 20px rgba(0,0,0,0.1);
+    animation:slideIn 0.6s ease;
+}
+
+.brand1{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.sidebar a{
+    display:block;
+    padding:12px 15px;
+    margin:8px 0;
+    text-decoration:none;
+    color:#e5e7eb;
+    border-radius:10px;
+    transition:all 0.3s ease;
+    font-size:15px;
+}
+
+.sidebar a:hover{
+    background:#fff;
+    color:#4f46e5;
+    transform:translateX(6px);
+}
+
+.sidebar a.active{
+    background:#fff;
+    color:#4f46e5;
+    font-weight:600;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:260px;
+    padding:30px;
+    animation:fadeUp 0.7s ease;
+}
+
+/* TOPBAR */
+
+.topbar{
+    background:#fff;
+    border-radius:14px;
+    padding:18px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+}
+
+.topbar h2{
+    font-size:20px;
+    font-weight:700;
+    color:#374151;
+}
+
+/* WELCOME TEXT */
+
+.welcome-box{
+    background:#fff;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.07);
+    margin-top:25px;
+    animation:fadeUp 0.8s ease;
+}
+
+.welcome-box h4{
+    font-weight:700;
+    color:#374151;
+}
+
+.welcome-box h5{
+    line-height:1.8;
+    font-size:16px;
+    color:#555;
+}
+
+/* BUTTON */
+
+.btn-danger{
+    border-radius:30px;
+    padding:7px 18px;
+}
+
+/* ANIMATIONS */
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes slideIn{
+    from{
+        transform:translateX(-100%);
+    }
+    to{
+        transform:translateX(0);
+    }
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.sidebar{
+    left:-260px;
+}
+
+.sidebar.show{
+    left:0;
+}
+
+.main{
+    margin-left:0;
+}
+
+.topbar h2{
+    font-size:16px;
+}
+
+}
+
+</style>
+
+<div class="sidebar" id="sidebar">
+
+    <div class="brand1">
+        <img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150">
+    </div>
+
+    <a href="{% url 'index'%}" class="active"><b>🏠 Home</b></a>
+    <a href="{% url 'about'%}"><b>ℹ️ About</b></a>
+    <a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
+    <a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
+    <a href="{% url 'students'%}"><b>👤 Students</b></a>
+    <a href="{% url 'studentresult'%}"><b>📊 Results</b></a>
+    <a href="{% url 'adminprofile'%}"><b>👤 Admin Profile</b></a>
+
+</div>
+
+<!-- MAIN CONTENT -->
+
+<div class="main">
+
+    <div class="topbar mb-4">
+        <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
+        <h2>Hi, Admin..! Welcome to the Dashboard</h2>
+        <a href="{% url 'adminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
+    </div>
+
+    <div class="welcome-box">
+
+        <h4 class="mb-3">Welcome to the Admin Dashboard</h4>
+
+        <h5>
+        <i><b>
+        Aman Technologies is a forward-thinking technology company dedicated to building smart, scalable, and reliable digital solutions. 
+        We specialize in transforming ideas into powerful software products that help businesses grow, adapt, and succeed in a rapidly evolving digital world.
+
+        Founded with a vision to simplify technology and make it accessible, Aman Technology focuses on delivering high-quality solutions with precision, innovation, and integrity. 
+        From web applications and enterprise systems to customized software development, we combine technical expertise with creative problem-solving to deliver results that truly matter.
+
+        At Aman Technology, we believe technology should solve real problems, not create complexity. Our approach is client-centric — we listen, analyze, and design solutions that align perfectly with business goals. 
+        Every project we undertake is driven by performance, security, and long-term scalability.
+
+        Our team is passionate about continuous learning and innovation, ensuring we stay ahead of industry trends and deliver modern, future-ready solutions. 
+        Whether you are a startup, an educational institution, or an enterprise, Aman Technology is your trusted partner for digital excellence.
+        </b></i>
+        </h5>
+
+    </div>
+
+</div>
+
+{% endblock %}

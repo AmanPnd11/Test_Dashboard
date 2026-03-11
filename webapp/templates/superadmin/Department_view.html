@@ -1,114 +1,327 @@
 {% extends "superadmin/index.html"%}
 {% load static %}
 
-
 {% block title %}Admin Dashboard{% endblock %}
 
-
-
 {%block Content%}
+
+<style>
+
+body{
+background:#f4f6fb;
+font-family:Segoe UI;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:250px;
+height:100vh;
+position:fixed;
+left:0;
+top:0;
+background:linear-gradient(180deg,#5a5ee0,#7c82ff);
+padding:20px;
+transition:.4s;
+box-shadow:0 0 20px rgba(0,0,0,.1);
+}
+
+.sidebar a{
+display:block;
+padding:12px 15px;
+margin:8px 0;
+color:white;
+text-decoration:none;
+border-radius:8px;
+transition:.3s;
+}
+
+.sidebar a:hover{
+background:white;
+color:#5a5ee0;
+transform:translateX(6px);
+}
+
+.sidebar a.active{
+background:white;
+color:#5a5ee0;
+}
+
+.brand1{
+text-align:center;
+margin-bottom:25px;
+}
+
+/* MAIN */
+
+.main{
+margin-left:250px;
+padding:30px;
+animation:fadeIn .6s ease;
+}
+
+/* TOPBAR */
+
+.topbar{
+background:white;
+padding:15px 20px;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.topbar h2{
+font-size:20px;
+font-weight:600;
+}
+
+/* CARD */
+
+.card{
+border:none;
+border-radius:12px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-4px);
+}
+
+/* INPUT */
+
+input{
+width:100%;
+padding:8px 10px;
+border:1px solid #ddd;
+border-radius:6px;
+transition:.3s;
+}
+
+input:focus{
+outline:none;
+border-color:#6f74dd;
+box-shadow:0 0 5px rgba(111,116,221,.3);
+}
+
+/* BUTTON */
+
+.btn-success{
+border:none;
+padding:8px 18px;
+border-radius:20px;
+color:white;
+font-weight:500;
+transition:.3s;
+}
+
+.btn-success:hover{
+transform:scale(1.05);
+}
+
+/* TABLE */
+
+table{
+margin-bottom:0;
+}
+
+th{
+width:200px;
+color:#555;
+}
+
+/* ANIMATION */
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.sidebar{
+left:-250px;
+}
+
+.sidebar.show{
+left:0;
+}
+
+.main{
+margin-left:0;
+padding:20px;
+}
+
+.topbar h2{
+font-size:16px;
+}
+
+}
+
+</style>
+
+
 <div class="sidebar" id="sidebar">
-    <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150"></div>    
-    <a href="{% url 'index'%}" class="active"><b>🏠 Home</b></a>
-    <a href="{% url 'about' %}"><b>ℹ️ About</b></a>
-    <a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
-    <a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
-    <a href="{% url 'students'%}"><b>👤 Students</b></a>
-    <a href="{% url 'studentresult'%}"><b>📊 Results</b></a>
-    <a href="{% url 'adminprofile'%}"><b>👤 Admin Profile</b></a>
+<div class="brand1">
+<img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150">
 </div>
 
-<!-- Main Content -->
+<a href="{% url 'index'%}" class="active"><b>🏠 Home</b></a>
+<a href="{% url 'about' %}"><b>ℹ️ About</b></a>
+<a href="{% url 'Department_view'%}"><b>🏠 Departments </b></a>
+<a href="{% url 'subadmins'%}"><b>👤 Sub Admins</b></a>
+<a href="{% url 'students'%}"><b>👤 Students</b></a>
+<a href="{% url 'studentresult'%}"><b>📊 Results</b></a>
+<a href="{% url 'adminprofile'%}"><b>👤 Admin Profile</b></a>
+</div>
+
+
 <div class="main">
-  <!-- Topbar -->
-  <div class="topbar mb-4">
-        <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
-        <h2>Hi, Admin..! Welcome to the Dashboard</h2>
-        <a href="{% url 'adminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
-  </div>
+
+<div class="topbar mb-4">
+<button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
+<h2>Hi, Admin..! Welcome to the Dashboard</h2>
+<a href="{% url 'adminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
+</div>
 
 
-    <h4 class="fw-bold mb-4 text-secondary">
-        ADD NEW DEPARTMENT
-    </h4>
-
-
-    <div class="container mt-4 mb-4">
-        <div class="card" style="padding:25px; border-radius:5px; background:white; box-shadow:0px 0px 10px #ddd;">
-
-            <form method="POST" action="{% url 'Department_view' %}">
-                {% csrf_token %}
-                
-                <div class="table-responsive">
-                    <table class="table table-sm">
-                    <tr>
-                        <th>Department Name</th>
-                        <td><input type="text" name="Deptname" placeholder="Enter Department Name" required></td>
-                    </tr>
-                
-                    <tr>
-                        <th>Department Code</th>
-                        <td><input type="text" name="Deptcode"  placeholder="Enter Department Code" required></td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2">
-                            <button type="submit" style="background: linear-gradient(90deg, #6f74dd,rgb(90, 29, 204))" class="btn btn-success">Create New Department</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-           </div>
-        </div>
-    </div>
-<br>
 <h4 class="fw-bold mb-4 text-secondary">
-    MANAGE DEPARTMENTS
+ADD NEW DEPARTMENT
 </h4>
 
-    <div class="container mt-4">
-        <div class="card" style="padding:25px; border-radius:5px; background:white; box-shadow:0px 0px 10px #ddd;">
-       
-            {% for depart in departs %}
-                <form method="POST" action="{% url 'dept_update' %}">
-                {% csrf_token %}
-                
-                <div class="table-responsive">
-                    <table class="table table-sm">
-                    <tr>
-                        <th>Department ID</th>
-                        <td><input type="text" name="id" value="{{ depart.id }}"></td>
-                    </tr>
-                
-                    <tr>
-                        <th>Department Name</th>
-                        <td><input type="text" name="Deptname" value="{{ depart.Deptname }}"></td>
-                    </tr>
-                
-                    <tr>
-                        <th>Department Code</th>
-                        <td><input type="text" name="Deptcode" value="{{ depart.Deptcode }}"></td>
-                    </tr>
-                
-                    <tr>
-                        <td colspan="2">
-                            <button type="submit" style="background: linear-gradient(90deg, #6f74dd,rgb(90, 29, 204))" class="btn btn-success">Update</button>
-                            <button type="submit" style="background: linear-gradient(90deg, #6f74dd,rgb(90, 29, 204))" class="btn btn-success">Delete</button>
 
-                        </td>
-                    </tr>
-                    <br>
-                </table>
-            </div>
-                </form>
+<div class="container mt-4 mb-4">
 
-           {% endfor %}
-        </div>
-    </div>
+<div class="card p-4">
+
+<form method="POST" action="{% url 'Department_view' %}">
+{% csrf_token %}
+
+<div class="table-responsive">
+
+<table class="table table-sm">
+
+<tr>
+<th>Department Name</th>
+<td>
+<input type="text" name="Deptname" placeholder="Enter Department Name" required>
+</td>
+</tr>
+
+<tr>
+<th>Department Code</th>
+<td>
+<input type="text" name="Deptcode" placeholder="Enter Department Code" required>
+</td>
+</tr>
+
+<tr>
+<td colspan="2">
+<button type="submit"
+style="background: linear-gradient(90deg,#6f74dd,#5a1dcc)"
+class="btn btn-success">
+Create New Department
+</button>
+</td>
+</tr>
+
+</table>
+
 </div>
+</form>
+
+</div>
+</div>
+
+
+<br>
+
+<h4 class="fw-bold mb-4 text-secondary">
+MANAGE DEPARTMENTS
+</h4>
+
+
+<div class="container mt-4">
+
+<div class="card p-4">
+
+{% for depart in departs %}
+
+<form method="POST" action="{% url 'dept_update' %}">
+{% csrf_token %}
+
+<div class="table-responsive">
+
+<table class="table table-sm">
+
+<tr>
+<th>Department ID</th>
+<td>
+<input type="text" name="id" value="{{ depart.id }}">
+</td>
+</tr>
+
+<tr>
+<th>Department Name</th>
+<td>
+<input type="text" name="Deptname" value="{{ depart.Deptname }}">
+</td>
+</tr>
+
+<tr>
+<th>Department Code</th>
+<td>
+<input type="text" name="Deptcode" value="{{ depart.Deptcode }}">
+</td>
+</tr>
+
+<tr>
+<td colspan="2">
+
+<button type="submit"
+style="background: linear-gradient(90deg,#6f74dd,#5a1dcc)"
+class="btn btn-success">
+Update
+</button>
+
+<button type="submit"
+style="background: linear-gradient(90deg,#ff4d4d,#cc0000)"
+class="btn btn-danger">
+Delete
+</button>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+
+</form>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</div>
+
+
 <script>
-    function toggleSidebar(){
-        document.getElementById("sidebar").classList.toggle("show");
-    }
+function toggleSidebar(){
+document.getElementById("sidebar").classList.toggle("show");
+}
 </script>
+
 {% endblock %}
