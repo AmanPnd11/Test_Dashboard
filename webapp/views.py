@@ -533,7 +533,7 @@ def subadminlogin(request):
         except TblSubAdmin.DoesNotExist:
             messages.error(request, "Invalid login credentials")
             return redirect("subadminlogin")
-            
+
         if check_password(password, subadmin.Subadminpassword):
 
             request.session["subadmin_id"] = subadmin.id
@@ -1146,3 +1146,6 @@ def test_submit(request, test_id):
 
     return redirect("test")
 
+
+def facultylogin(request):
+    return render(request, 'student/facultylogin.html')
