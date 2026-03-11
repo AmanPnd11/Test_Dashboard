@@ -80,8 +80,8 @@ DATABASES = {
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'test_dash',     # database Name
-        'USER': 'root',       #MySQL username
-        'PASSWORD': '', # MySQL password
+        'USER': 'test_dash',       #MySQL username
+        'PASSWORD': 'test_dash_786', # MySQL password
         'HOST': 'localhost',        #same machine 'localhost'
         'PORT': '3306',
     }
@@ -140,6 +140,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL ='/media/'
 
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-SESSION_COOKIE_AGE = 86400
-SESSION_SAVE_EVERY_REQUEST = True
+# SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+# SESSION_COOKIE_AGE = 86400
+# SESSION_SAVE_EVERY_REQUEST = True
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+
+# EMAIL_HOST_USER='amanpande416@gmail.com'
+# EMAIL_HOST_PASSWORD= ' '

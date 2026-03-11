@@ -525,14 +525,6 @@ def subadminlogin(request):
             messages.error(request, "Invalid Department")
             return redirect("subadminlogin")        
 
-
-# def subadminlogin(request):
-#      if request.method == "POST":
-#         Subadminfirstname = request.POST.get("Subadminfirstname")
-#         Subadminpassword = request.POST.get("Subadminpassword")
-#         dept_code = request.POST.get("department")
-
-
         try:
             subadmin = TblSubAdmin.objects.get(
                 Subadminemail=email,
@@ -542,11 +534,6 @@ def subadminlogin(request):
             messages.error(request, "Invalid login credentials")
             return redirect("subadminlogin")
 
-
-
-    if check_password(password, subadmin.Subadminpassword):
-
-
         if check_password(password, subadmin.Subadminpassword):
 
             request.session["subadmin_id"] = subadmin.id
@@ -555,15 +542,12 @@ def subadminlogin(request):
             messages.success(request, "Welcome SubAdmin")
             return redirect("subadmindashboard")
 
-    else:
+        else:
             messages.error(request, "Invalid Password")
             return redirect("subadminlogin")
 
     return render(
-        request,
-        "subadmin/subadminlogin.html",
-        {"departments": departments}
-    )
+        request, "subadmin/subadminlogin.html",{"departments": departments})
 
 # def updatesubadmins(request):
 #     subads = TblSubAdmin.objects.all()
@@ -768,24 +752,30 @@ def subject_test_creation(request):
     if not subadmin:
         return redirect('subadmin_login')
 
-    subjects = Subject.objects.filter(
-        Department=subadmin.Department
-    )
+    subjects = Subject.objects.filter(Department=subadmin.Department)
 
     if request.method == "POST":
+
         subject_name = request.POST.get('subject_name')
         test_name = request.POST.get('test_name')
         duration = request.POST.get('duration')
 
+        # Validation
+        if not subject_name or not test_name or not duration:
+            return render(request, 'subadmin/subject_test_creation.html', {
+                'subjects': subjects,
+                'error': "All fields are required."
+            })
+
         # Create or get subject
         subject, created = Subject.objects.get_or_create(
-            Subjectname=subject_name,
+            Subjectname=subject_name.strip(),
             Department=subadmin.Department
         )
 
         # Create test
         test = Test.objects.create(
-            test_name=test_name,
+            test_name=test_name.strip(),
             Subject=subject,
             duration=int(duration),
             Department=subadmin.Department,
@@ -794,11 +784,8 @@ def subject_test_creation(request):
 
         return redirect('upload_question', test_id=test.id)
 
-    return render(
-        request,
-        'subadmin/subject_test_creation.html',
-        {'subjects': subjects}
-    )
+    return render(request, 'subadmin/subject_test_creation.html', {'subjects': subjects})
+
 # @subadmin_required
 # def subject_test_creation(request):
 #     subadmin = get_subadmin(request)
@@ -933,11 +920,51 @@ def subadmin_upd(request, email):
 
 
 
+@subadmin_required
+def update_test(request, test_id):
+
+    subadmin = get_subadmin(request)
+    test = get_object_or_404(Test, id=test_id, Department=subadmin.Department)
+
+    subjects = Subject.objects.filter(Department=subadmin.Department)
+
+    if request.method == "POST":
+
+        test.test_name = request.POST.get("test_name")
+        test.duration = request.POST.get("duration")
+
+        subject_id = request.POST.get("subject")
+        test.Subject = Subject.objects.get(id=subject_id)
+
+        test.save()
+
+        messages.success(request, "Test Updated Successfully")
+        return redirect("subject_test_creation")
+
+    return render(request, "subadmin/update_test.html", { "test": test, "subjects": subjects})
+
+
+@subadmin_required
+def delete_test(request, test_id):
+
+    subadmin = get_subadmin(request)
+    test = get_object_or_404(Test, id=test_id, Department=subadmin.Department)
+
+    test.delete()
+
+    messages.success(request, "Test Deleted Successfully")
+    return redirect("subject_test_creation")
+
 
 def subadminlogout(request):
     request.session.flush()   
     messages.info(request, "Logged out successfully")
     return redirect("subadminlogin")
+
+
+
+
+
 
 
 

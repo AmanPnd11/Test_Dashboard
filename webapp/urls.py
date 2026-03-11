@@ -50,6 +50,10 @@ urlpatterns = [
             path('subadminlogout/', views.subadminlogout, name='subadminlogout'),
             path('forgotsubadminprofile/', views.forgotsubadminprofile, name='forgotsubadminprofile'),
             path('subadmin_upd/<str:email>/', views.subadmin_upd, name='subadmin_upd'),
+            path('update_test/<int:test_id>/', views.update_test, name='update_test'),
+            path('delete_test/<int:test_id>', views.delete_test, name='delete_test'),
+
+
 
     # STUDENTS DASHBOARD URLS
         path('studentregistration/', views.studregistration, name='studregistration'),

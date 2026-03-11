@@ -1,0 +1,80 @@
+{% extends "subadmin/subadmindashboard.html"%}
+{% load static %}
+
+
+{% block title %}<title>SubAdmin Dashboard</title>{% endblock %}
+
+
+{%block Content%}
+<div class="sidebar" id="sidebar">
+    <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150"></div>
+    <a href="{% url 'subadmindashboard' %}" class="active">🏠 Home</a>
+    <a href="{% url 'subject_test_creation' %}"><b>📘 Subject</b></a> 
+    {% comment %} <a href="#"><b>📊 Test </b></a> {% endcomment %}
+    <a href="{% url 'deptstudent' %}"><b>👤 Students</b></a>
+    <a href="{% url 'result_view'%}"><b>📊 Results</b></a>
+    <a href="{% url 'subadminprofile' %}"><b>👤 SubAdmin Profile</b></a>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+    
+    <!-- Topbar -->
+    <div class="topbar mb-4">
+        <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
+        <h2>Hi, SubAdmin..! Welcome to the Department Dashboard</h2>
+        <a href="{% url 'subadminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
+    </div>
+
+    <!-- Welcome -->
+  <h4 class="fw-bold mb-4 text-secondary">
+      MANAGE DEPARTMENT TEST
+  </h4>
+
+
+
+<div class="container mt-4">
+    <div class="card"
+        style="padding:25px; border-radius:5px; background:white; box-shadow:0px 0px 10px #ddd;">
+
+
+       <form method="POST">
+         {% csrf_token %}
+       
+         <div class="mb-3">
+             <label>Test Name</label>
+             <input type="text" name="test_name" class="form-control" value="{{ test.test_name }}" required>
+         </div>
+       
+       
+          <div class="mb-3">
+              <label>Subject</label>
+          <select name="subject" class="form-control">
+       
+            {% for sub in subjects %}
+            
+            <option value="{{ sub.id }}" {% if sub.id == test.Subject.id %}selected{% endif %}>
+            {{ sub.Subjectname }}
+            </option>
+            
+            {% endfor %}
+           </select>
+       
+            </div>
+            
+            
+            <div class="mb-3">
+            <label>Duration (Minutes)</label>
+            <input type="number" name="duration" class="form-control" value="{{ test.duration }}" required>
+            </div>
+            
+            
+            <button type="submit" class="btn btn-success">Update Test</button>
+
+            <a href="{% url 'subject_test_creation' %}" class="btn btn-secondary">Back</a>
+       </form>
+    </div>
+</div>
+</div>
+
+{% endblock %}
