@@ -69,6 +69,9 @@ urlpatterns = [
         path('facultylogin/', views.facultylogin, name='facultylogin'),
         path('Result/', views.Result, name='Result'),    
 
+        # path('send-email/', views.send_test_email, name='send_test_email'),
+
+
 
 
 ]

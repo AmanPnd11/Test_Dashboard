@@ -1104,6 +1104,8 @@ def forgotstudent(request):
 
     return render(request, "student/forgotstudent.html")
 
+
+
 @student_required
 def test_start(request, test_id):
     test = Test.objects.get(id=test_id)
@@ -1119,6 +1121,55 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Test, Question, StudentResult
 from .models import studentregistration
 
+# @student_required
+# def test_submit(request, test_id):
+
+#     test = get_object_or_404(Test, id=test_id)
+#     questions = Question.objects.filter(Test=test)
+
+#     if request.method == "POST":
+
+#         obtained_marks = 0
+#         total_marks = 0
+
+#         for question in questions:
+
+#             selected_answer = request.POST.get(str(question.id))
+
+#             total_marks += question.marks
+
+#             if selected_answer == question.correct_option:
+#                 obtained_marks += question.marks
+
+#         total_questions = questions.count()
+
+#         percentage = (
+#             obtained_marks / total_marks * 100
+#             if total_marks > 0 else 0
+#         )
+
+#         status = "Pass" if percentage >= 40 else "Fail"
+
+#         student_obj = studentregistration.objects.get(id=request.session.get("student_id"))
+#         StudentResult.objects.create(
+#             studentregistration=student_obj,
+#             Test=test,
+#             total_questions=total_questions,
+#             total_marks=total_marks,
+#             obtained_marks=obtained_marks,
+#             percentage=percentage,
+#             status=status
+#         )
+
+#         return redirect("test_submit", test_id)
+
+#     return redirect("Result")
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.mail import send_mail
+from django.conf import settings
+from .models import Test, Question, StudentResult, studentregistration
+
 @student_required
 def test_submit(request, test_id):
 
@@ -1133,7 +1184,6 @@ def test_submit(request, test_id):
         for question in questions:
 
             selected_answer = request.POST.get(str(question.id))
-
             total_marks += question.marks
 
             if selected_answer == question.correct_option:
@@ -1141,14 +1191,14 @@ def test_submit(request, test_id):
 
         total_questions = questions.count()
 
-        percentage = (
-            obtained_marks / total_marks * 100
-            if total_marks > 0 else 0
-        )
+        percentage = (obtained_marks / total_marks * 100) if total_marks > 0 else 0
 
         status = "Pass" if percentage >= 40 else "Fail"
 
-        student_obj = studentregistration.objects.get(id=request.session.get("student_id"))
+        student_obj = studentregistration.objects.get(
+            id=request.session.get("student_id")
+        )
+
         StudentResult.objects.create(
             studentregistration=student_obj,
             Test=test,
@@ -1159,7 +1209,36 @@ def test_submit(request, test_id):
             status=status
         )
 
-        return redirect("test_submit", test_id)
+     
+        subject = "Your Test Result"
+
+        message = f"""
+         Hello {student_obj.username},
+
+         Your test has been submitted successfully.
+         
+         Test Name: {test.test_name}
+         
+         Total Questions: {total_questions}
+         Total Marks: {total_marks}
+         Obtained Marks: {obtained_marks}
+         Percentage: {percentage:.2f}%
+         Status: {status}
+         
+         Thank you for using the Online Test Portal.
+         
+         Regards,
+         Online Test System
+        """
+
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [student_obj.mail],
+            fail_silently=False,
+        )
+        return redirect("Result")
 
     return redirect("Result")
 
@@ -1171,3 +1250,27 @@ def studentlogout(request):
 
 def facultylogin(request):
     return render(request, 'student/facultylogin.html')
+
+
+from django.core.mail import send_mail
+from django.http import HttpResponse
+
+
+
+# def send_test_email(request):
+#     if request.method == "POST":
+
+#      send_mail(
+#          'Test from Django',
+#          'If you received this, SMTP works!',
+#          'amanpande416@gmail.com',
+#          ['btatewar3@gmail.com'],
+#          fail_silently=False,
+#      )
+#      return HttpResponse("Email sent successfully")
+
+#     return render(request,"student/mail.html")
+
+
+
+
