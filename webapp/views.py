@@ -1271,6 +1271,28 @@ from django.http import HttpResponse
 
 #     return render(request,"student/mail.html")
 
+def student_upd(request, mail):
+    st = get_object_or_404(studentregistration, mail=mail)
+    departments = Department.objects.all()
 
+    if request.method == "POST":
+        st.username = request.POST.get("username")
+        st.mail = request.POST.get("mail")
+        st.RollNo = request.POST.get("RollNo")
+        st.MobileNo = request.POST.get("MobileNo")
+        dept_id = request.POST.get("Department")
+
+        if dept_id:
+            st.Department = Department.objects.get(id=dept_id)
+        st.save()
+        messages.success(request, "Profile updated successfully")
+        return redirect("studentprofile")
+            
+    context = {
+        "st": st,
+        "departments": departments
+    }
+    return render(request, "student/student_upd.html", context)
+                
 
 

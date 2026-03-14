@@ -156,14 +156,14 @@
    
    
                {% comment %} {% for admin in admins %} {% endcomment %}
-                   <form method="POST" action="#">
+                   <form method="POST" action="{% url 'student_upd' st.mail %}">
                    {% csrf_token %}
                    
                    <table class="table table-sm">
                    
                        <tr>
                            <th>User Name</th>
-                           <td><input type="text" class="form-control" placeholder="username" aria-label="username" aria-describedby="addon-wrapping"  name="mail" value="{{ st.username }}"></td>
+                           <td><input type="text" class="form-control" placeholder="username" aria-label="username" aria-describedby="addon-wrapping"  name="username" value="{{ st.username }}"></td>
                        </tr>
                    
                        <tr>
