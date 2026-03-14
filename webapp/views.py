@@ -980,27 +980,28 @@ def studregistration(request):
         Deptcode = request.POST.get("Department")
 
         if studentregistration.objects.filter(mail=mail).exists():
-            message.error(request, "Email already exists")
+            messages.error(request, "Email already exists")
+
         elif studentregistration.objects.filter(RollNo=RollNo).exists():
-            message.error(request, "Email already exists")
+            messages.error(request, "Roll Number already exists")
+
         else:
-             department_obj = Department.objects.get(id=Deptcode)
+            department_obj = Department.objects.get(id=Deptcode)
 
-             studentregistration.objects.create(
-                 username=username,
-                 mail=mail,
-                 RollNo=RollNo,
-                 MobileNo=MobileNo,
-                 CreatePassword=CreatePassword,
-                 Department=department_obj
-             )
+            studentregistration.objects.create(
+                username=username,
+                mail=mail,
+                RollNo=RollNo,
+                MobileNo=MobileNo,
+                CreatePassword=CreatePassword,
+                Department=department_obj
+            )
 
-             messages.success(request," Student Registered Successfully")
-             return redirect("studentlogin")
-    
+            messages.success(request, "Student Registered Successfully")
+            return redirect("studentlogin")
+
     departments = Department.objects.all()
     return render(request, "student/studregistration.html", {"departments": departments})
-
 
 
 def studentlogin(request):
