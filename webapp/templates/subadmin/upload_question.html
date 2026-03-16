@@ -2,7 +2,7 @@
 {% load static %}
 
 
-{% block title %}<title>SubAdmin Dashboard</title>{% endblock %}
+<title>{% block title%}SubAdmin Dashboard{% endblock title%}</title>
 
 
 {%block Content%}
@@ -68,6 +68,10 @@
 
         <button class="btn btn-primary">
             Save Question
+        </button>
+        
+        <button class="btn btn-secondary" formaction="{% url 'subject_test_creation' %}">"
+            Finish & Back to Dashboard
         </button>
     </form>
 </div>
