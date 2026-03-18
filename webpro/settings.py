@@ -91,11 +91,13 @@ DATABASES = {
         'NAME': 'test_dash',     # database Name
         'USER': 'test_dash_user',       #MySQL username
         'PASSWORD': '3FD9YEzPRGx3aYCuFOff02LpGysao0G3', # MySQL password'test_dash_786'
-        'HOST': 'dpg-d6t49mmuk2gs738jka9g-a.oregon-postgres.render.com/test_dash',        #same machine 'localhost'
+        'HOST': 'dpg-d6t49mmuk2gs738jka9g-a.oregon-postgres.render.com',        #same machine 'localhost'
         'PORT': '5432',
     }
 }
 
+
+# DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'test_dash',
