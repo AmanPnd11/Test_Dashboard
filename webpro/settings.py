@@ -75,19 +75,27 @@ WSGI_APPLICATION = 'webpro.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test_dash',     # database Name
-        'USER': 'test_dash',       #MySQL username
-        'PASSWORD': 'test_dash_786', # MySQL password
-        'HOST': 'localhost',        #same machine 'localhost'
-        'PORT': '3306',
-    }
-}
+import os
+import dj_database_url
 
+if os.getenv('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(os.getenv('DATABASE_URL'))
+    }
+else:
+    DATABASES = {
+        'default': {
+            # 'ENGINE': 'django.db.backends.sqlite3',
+            # 'NAME': BASE_DIR / 'db.sqlite3',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'test_dash',     # database Name
+            'USER': 'test_dash',       #MySQL username
+            'PASSWORD': 'test_dash_786', # MySQL password
+            'HOST': 'localhost',        #same machine 'localhost'
+            'PORT': '3306',
+        }
+    }
+    
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
