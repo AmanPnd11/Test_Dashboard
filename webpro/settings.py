@@ -75,14 +75,14 @@ WSGI_APPLICATION = 'webpro.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-import os
-import dj_database_url
+# import os
+# import dj_database_url
 
-if os.getenv('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.config(os.getenv('DATABASE_URL'))
-    }
-else:
+# if os.getenv('DATABASE_URL'):
+#     DATABASES = {
+#         'default': dj_database_url.config(os.getenv('DATABASE_URL'))
+#     }
+# else:
     DATABASES = {
         'default': {
             # 'ENGINE': 'django.db.backends.sqlite3',
@@ -91,8 +91,8 @@ else:
             'NAME': 'test_dash',     # database Name
             'USER': 'test_dash',       #MySQL username
             'PASSWORD': 'test_dash_786', # MySQL password
-            'HOST': 'localhost',        #same machine 'localhost'
-            'PORT': '3306',
+            'HOST': 'postgresql://test_dash_user:3FD9YEzPRGx3aYCuFOff02LpGysao0G3@dpg-d6t49mmuk2gs738jka9g-a/test_dash',        #same machine 'localhost'
+            'PORT': '5432',
         }
     }
     
