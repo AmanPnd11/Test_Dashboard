@@ -87,7 +87,7 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'test_dash',     # database Name
         'USER': 'test_dash',       #MySQL username
         'PASSWORD': 'test_dash_786', # MySQL password
