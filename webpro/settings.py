@@ -90,8 +90,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'test_dash',     # database Name
         'USER': 'test_dash',       #MySQL username
-        'PASSWORD': 'test_dash_786', # MySQL password
-        'HOST': 'postgresql://test_dash_user:3FD9YEzPRGx3aYCuFOff02LpGysao0G3@dpg-d6t49mmuk2gs738jka9g-a/test_dash',        #same machine 'localhost'
+        'PASSWORD': '3FD9YEzPRGx3aYCuFOff02LpGysao0G3', # MySQL password'test_dash_786'
+        'HOST': 'dpg-d6t49mmuk2gs738jka9g-a',        #same machine 'localhost'
         'PORT': '5432',
     }
 }
