@@ -179,13 +179,23 @@ def dept_update(request):
     dept = get_object_or_404(Department, id=request.POST.get('id'))
 
     if request.method == "POST":
-        dept.id = request.POST.get('id')
-        dept.Deptname = request.POST.get('Deptname')
-        dept.Deptcode= request.POST.get('Deptcode')
 
-        dept.save()
-        messages.success(request, "Department updated successfully")
-        return redirect('Department_view')
+        action = request.POST.get("action")
+
+        if action == "delete":
+            dept.delete()
+            messages.success(request, "Department deleted successfully")
+            return redirect("Department_view")
+
+        elif action == "update":
+            dept.id = request.POST.get('id')
+            dept.Deptname = request.POST.get('Deptname')
+            dept.Deptcode= request.POST.get('Deptcode')
+
+            dept.save()
+            messages.success(request, "Department updated successfully")
+            return redirect('Department_view')
+            
     return redirect('Department_view')
 
 
@@ -518,7 +528,6 @@ def subadminlogin(request):
         password = request.POST.get("Subadminpassword")
         dept_id = request.POST.get("department")
 
-        # ✅ Department check
         try:
             department = Department.objects.get(id=dept_id)
         except Department.DoesNotExist:
