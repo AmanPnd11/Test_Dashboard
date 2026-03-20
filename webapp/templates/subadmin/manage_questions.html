@@ -1,0 +1,123 @@
+{% extends "subadmin/subadmindashboard.html"%}
+{% load static %}
+
+
+<title>{% block title%}SubAdmin Dashboard{% endblock title%}</title>
+
+
+{%block Content%}
+
+
+<!-- MESSAGES -->
+{% for message in messages %}
+<div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+
+<div class="sidebar" id="sidebar">
+    <div class="brand1"> <img src="{% static 'images/tgpcete.jpg' %}" class="img-fluid hero-img mb-3" width="150"></div>
+    <a href="{% url 'subadmindashboard' %}" class="active">🏠 Home</a>
+    <a href="{% url 'subject_test_creation' %}"><b>📘 Subject</b></a> 
+    {% comment %} <a href="#"><b>📊 Test </b></a> {% endcomment %}
+    <a href="{% url 'deptstudent' %}"><b>👤 Students</b></a>
+    <a href="{% url 'result_view'%}"><b>📊 Results</b></a>
+    <a href="{% url 'subadminprofile' %}"><b>👤 SubAdmin Profile</b></a>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+    
+    <!-- Topbar -->
+    <div class="topbar mb-4">
+        <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
+        <h2>Hi, SubAdmin..! Welcome to the Department Dashboard</h2>
+        <a href="{% url 'subadminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
+    </div>
+
+    <!-- Welcome -->
+  <h4 class="fw-bold mb-4 text-secondary">
+      MANAGE DEPARTMENT TEST
+  </h4>
+
+  <div class="container mt-4">
+    <div class="card"
+        style="padding:25px; border-radius:5px; background:white; box-shadow:0px 0px 10px #ddd;">
+
+
+<!-- FORM -->
+<div class="card p-3 mb-4">
+    <h4>{% if edit_question %}Update{% else %}Add{% endif %} Question</h4>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="hidden" name="question_id" value="{{ edit_question.id }}">
+
+        <textarea name="question_text" class="form-control mb-2" placeholder="Enter question" required>
+{{ edit_question.question_text|default:'' }}
+        </textarea>
+
+        <input type="text" name="option_a" placeholder="Option A"
+               value="{{ edit_question.option_a|default:'' }}" class="form-control mb-2" required>
+
+        <input type="text" name="option_b" placeholder="Option B"
+               value="{{ edit_question.option_b|default:'' }}" class="form-control mb-2" required>
+
+        <input type="text" name="option_c" placeholder="Option C"
+               value="{{ edit_question.option_c|default:'' }}" class="form-control mb-2" required>
+
+        <input type="text" name="option_d" placeholder="Option D"
+               value="{{ edit_question.option_d|default:'' }}" class="form-control mb-2" required>
+
+        <select name="correct_option" class="form-control mb-2">
+            <option value="A" {% if edit_question.correct_option == "A" %}selected{% endif %}>A</option>
+            <option value="B" {% if edit_question.correct_option == "B" %}selected{% endif %}>B</option>
+            <option value="C" {% if edit_question.correct_option == "C" %}selected{% endif %}>C</option>
+            <option value="D" {% if edit_question.correct_option == "D" %}selected{% endif %}>D</option>
+        </select>
+
+        <input type="number" name="marks" placeholder="Marks"
+               value="{{ edit_question.marks|default:1 }}" class="form-control mb-2">
+
+        <button class="btn btn-primary">
+            {% if edit_question %}Update{% else %}Add{% endif %}
+        </button>
+
+        {% if edit_question %}
+        <a href="{% url 'manage_questions' test.id %}" class="btn btn-secondary">Cancel</a>
+        {% endif %}
+    </form>
+</div>
+
+<!-- QUESTION LIST -->
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Question</th>
+            <th>Correct</th>
+            <th>Marks</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for q in questions %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ q.question_text }}</td>
+            <td>{{ q.correct_option }}</td>
+            <td>{{ q.marks }}</td>
+            <td>
+                <a href="?edit={{ q.id }}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="?delete={{ q.id }}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('Delete this question?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</div>
+</div>
+</div>
+{% endblock %}

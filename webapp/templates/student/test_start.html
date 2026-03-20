@@ -138,13 +138,16 @@
     let totalSeconds = {{ test.duration }} * 60;
 
     // 2. Timer Logic
-    const timerDisplay = document.getElementById('timerDisplay');
     const timerInterval = setInterval(() => {
-        if (totalSeconds <= 0) {
-            clearInterval(timerInterval);
-            document.getElementById('testForm').submit();
-        }
         totalSeconds--;
+    
+        if (totalSeconds < 0) {
+            clearInterval(timerInterval);
+            document.getElementById('timerDisplay').textContent = "00:00";
+            document.getElementById('testForm').submit();
+            return;
+        }
+    
         const m = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
         const s = String(totalSeconds % 60).padStart(2, '0');
         timerDisplay.textContent = `${m}:${s}`;

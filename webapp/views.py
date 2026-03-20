@@ -195,7 +195,7 @@ def dept_update(request):
             dept.save()
             messages.success(request, "Department updated successfully")
             return redirect('Department_view')
-            
+
     return redirect('Department_view')
 
 
@@ -971,9 +971,98 @@ def subadminlogout(request):
     return redirect("subadminlogin")
 
 
+# @subadmin_required
+# def manage_questions(request, test_id):
 
+#     subadmin = get_subadmin(request)
+#     question = get_object_or_404(Question, id=test_id)
+#     if request.method == "POST":
+#         question.question_text = request.POST.get("question_text")
 
+#         test.save()
 
+#         messages.success(request, "Test Updated Successfully")
+#         return redirect("subject_test_creation")
+
+#     return render(request, 'subadmin/manage_questions.html', {"question": question})
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import Test, Question, TblSubAdmin
+
+@subadmin_required
+def manage_questions(request, test_id):
+    subadmin_id = request.session.get('subadmin_id')
+
+    if not subadmin_id:
+        return redirect('subadmin_login')
+
+    subadmin = get_object_or_404(TblSubAdmin, id=subadmin_id)
+
+    # Restrict test to subadmin department
+    test = get_object_or_404(
+        Test,
+        id=test_id,
+        Department=subadmin.Department
+    )
+
+    questions = test.questions.all()
+
+    edit_question = None
+
+    # EDIT MODE
+    edit_id = request.GET.get('edit')
+    if edit_id:
+        edit_question = get_object_or_404(
+            Question,
+            id=edit_id,
+            Test__Department=subadmin.Department
+        )
+
+    # DELETE
+    delete_id = request.GET.get('delete')
+    if delete_id:
+        q = get_object_or_404(
+            Question,
+            id=delete_id,
+            Test__Department=subadmin.Department
+        )
+        q.delete()
+        messages.success(request, "Question deleted!")
+        return redirect('manage_questions', test_id=test.id)
+
+    # CREATE / UPDATE
+    if request.method == "POST":
+        qid = request.POST.get("question_id")
+
+        data = {
+            "question_text": request.POST.get("question_text"),
+            "option_a": request.POST.get("option_a"),
+            "option_b": request.POST.get("option_b"),
+            "option_c": request.POST.get("option_c"),
+            "option_d": request.POST.get("option_d"),
+            "correct_option": request.POST.get("correct_option"),
+            "marks": request.POST.get("marks"),
+        }
+
+        if qid:  # UPDATE
+            question = get_object_or_404(
+                Question,
+                id=qid,
+                Test__Department=subadmin.Department
+            )
+            for key, value in data.items():
+                setattr(question, key, value)
+            question.save()
+            messages.success(request, "Question updated!")
+
+        else:  # CREATE
+            Question.objects.create(Test=test, **data)
+            messages.success(request, "Question added!")
+
+        return redirect('manage_questions', test_id=test.id)
+
+    return render(request, "subadmin/manage_questions.html", {"test": test, "questions": questions,"edit_question": edit_question})
 
 
 

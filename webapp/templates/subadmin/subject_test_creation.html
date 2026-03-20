@@ -109,8 +109,13 @@
                         onclick="return confirm('Are you sure to delete this test?')">
                         Delete
                         </a>
+
+                        <a href="{% url 'manage_questions' test.id %}" class="btn btn-danger btn-sm"
+                        {% comment %} onclick="return confirm('Are you sure to delete this test?')" {% endcomment %} >
+                        Edit Questions
+                        </a>
                         
-                        </td>
+                    </td>
                 </tr>
 
             </table>

@@ -52,7 +52,7 @@ urlpatterns = [
             path('subadmin_upd/<str:email>/', views.subadmin_upd, name='subadmin_upd'),
             path('update_test/<int:test_id>/', views.update_test, name='update_test'),
             path('delete_test/<int:test_id>', views.delete_test, name='delete_test'),
-
+            path('manage-questions/<int:test_id>/', views.manage_questions, name='manage_questions'),
 
 
     # STUDENTS DASHBOARD URLS
