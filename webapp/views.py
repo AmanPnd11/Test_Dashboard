@@ -1209,10 +1209,12 @@ def forgotstudent(request):
 def test_start(request, test_id):
     test = Test.objects.get(id=test_id)
     questions = Question.objects.filter(Test_id=test_id)
+    studensts = studentregistration.objects.get(id=request.session.get("student_id"))
 
     context = {
         "test": test,
         "questions": questions,
+        "studensts": studensts,
     }
     return render(request, 'student/test_start.html', context)
 
