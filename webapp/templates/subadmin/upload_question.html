@@ -40,18 +40,27 @@
     <form method="POST" action="{% url 'upload_question' test.id %}">
         {% csrf_token %}
 
-        <div class="mb-2">
+        <div class="mb-3">
+            <label><b>Question {{ question_number }}:</b></label>
             <textarea name="question_text"
                       class="form-control"
-                      placeholder="Question"
+                      placeholder="Enter Question"
                       required></textarea>
         </div>
 
-        <input class="form-control mb-2" name="option_a" placeholder="Option A" required>
-        <input class="form-control mb-2" name="option_b" placeholder="Option B" required>
-        <input class="form-control mb-2" name="option_c" placeholder="Option C" required>
-        <input class="form-control mb-2" name="option_d" placeholder="Option D" required>
+        <label>Option A</label>
+        <input class="form-control mb-3" name="option_a" placeholder="Option A" required>
 
+        <label>Option B</label>
+        <input class="form-control mb-3" name="option_b" placeholder="Option B" required>
+
+        <label>Option C</label>
+        <input class="form-control mb-3" name="option_c" placeholder="Option C" required>
+
+        <label>Option D</label>
+        <input class="form-control mb-3" name="option_d" placeholder="Option D" required>
+
+        <label>Options</label>
         <select name="correct_option" class="form-control mb-2" required>
             <option value="">Select Correct Option</option>
             <option value="A">Option A</option>
@@ -60,6 +69,7 @@
             <option value="D">Option D</option>
         </select>
 
+        <label>Marks</label>
         <input class="form-control mb-3"
                type="number"
                name="marks"
@@ -70,7 +80,7 @@
             Save Question
         </button>
         
-        <button class="btn btn-secondary" formaction="{% url 'subject_test_creation' %}">"
+        <button class="btn btn-secondary" formaction="{% url 'subject_test_creation' %}">
             Back to Dashboard
         </button>
     </form>

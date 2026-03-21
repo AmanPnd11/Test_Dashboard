@@ -828,7 +828,6 @@ def subject_test_creation(request):
 #     })
 
 
-
 @subadmin_required
 def upload_question(request, test_id):
 
@@ -841,6 +840,9 @@ def upload_question(request, test_id):
         id=test_id,
         Department=subadmin.Department
     )
+
+    # 👉 Count existing questions
+    question_count = Question.objects.filter(Test=test).count()
 
     if request.method == "POST":
         Question.objects.create(
@@ -856,7 +858,38 @@ def upload_question(request, test_id):
 
         return redirect('upload_question', test_id=test.id)
 
-    return render( request,'subadmin/upload_question.html', {'test': test})
+    return render(request, 'subadmin/upload_question.html', {
+        'test': test,
+        'question_number': question_count + 1 })
+
+# @subadmin_required
+# def upload_question(request, test_id):
+
+#     subadmin = get_subadmin(request)
+#     if not subadmin:
+#         return redirect('subadmin_login')
+
+#     test = get_object_or_404(
+#         Test,
+#         id=test_id,
+#         Department=subadmin.Department
+#     )
+
+#     if request.method == "POST":
+#         Question.objects.create(
+#             Test=test,
+#             question_text=request.POST.get('question_text'),
+#             option_a=request.POST.get('option_a'),
+#             option_b=request.POST.get('option_b'),
+#             option_c=request.POST.get('option_c'),
+#             option_d=request.POST.get('option_d'),
+#             correct_option=request.POST.get('correct_option'),
+#             marks=request.POST.get('marks', 1)
+#         )
+
+#         return redirect('upload_question', test_id=test.id)
+
+#     return render( request,'subadmin/upload_question.html', {'test': test})
 
 # @subadmin_required
 # def upload_question(request, test_id):
@@ -1339,9 +1372,9 @@ def test_submit(request, test_id):
             [student_obj.mail],
             fail_silently=False,
         )
-        return redirect("Result")
+        return redirect("show_result", result_id=StudentResult.objects.latest('id').id)
 
-    return redirect("Result")
+    return redirect("show_result")
 
 
 def studentlogout(request):
@@ -1397,3 +1430,26 @@ def student_upd(request, mail):
                 
 
 
+from django.shortcuts import render, get_object_or_404
+from .models import StudentResult
+
+def show_result(request, result_id):
+    result = get_object_or_404(StudentResult, id=result_id)
+
+    correct = result.obtained_marks
+    wrong = result.total_marks - result.obtained_marks
+
+    context = {
+        'score': result.obtained_marks,
+        'total_questions': result.total_questions,
+        'total_marks': result.total_marks,
+        'correct': correct,
+        'wrong': wrong,
+        'percentage': round(result.percentage, 2),
+        'status': result.status,
+        'test_name': result.Test.test_name,
+        'student_name': result.studentregistration.username
+    }
+
+    return render(request, 'student/show_result.html', context)
+    

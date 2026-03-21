@@ -70,8 +70,7 @@ urlpatterns = [
         path('Result/', views.Result, name='Result'),    
         path('student_upd/<str:mail>/', views.student_upd, name='student_upd'),
         # path('send-email/', views.send_test_email, name='send_test_email'),
-
-
+        path('show_result/<int:result_id>/', views.show_result, name='show_result'),
 
 
 ]

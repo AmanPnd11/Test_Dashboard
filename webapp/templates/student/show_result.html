@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Result</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #0f172a;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .result-card {
+            position: relative;
+            z-index: 2;
+            width: 400px;
+            margin: 100px auto;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .score {
+            font-size: 45px;
+            font-weight: bold;
+            color: #22c55e;
+        }
+
+        .pass {
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        .fail {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #22c55e;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 3;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+        }
+
+        .modal-content {
+            background: #1e293b;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 15px;
+            width: 320px;
+            text-align: center;
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 🔥 Firecracker Background -->
+<canvas id="fireworks"></canvas>
+
+<!-- ✅ RESULT CARD -->
+<div class="result-card">
+
+    <h2>🎉 {{ test_name }} Completed</h2>
+
+    <p><strong>Student:</strong> {{ student_name }}</p>
+
+    <p>Your Score</p>
+    <div class="score">{{ score }} / {{ total_marks }}</div>
+
+    <!-- PASS / FAIL -->
+    {% if status|upper == "PASS" %}
+        <span class="badge bg-success">PASS</span>
+    {% else %}
+        <span class="badge bg-danger">FAIL</span>
+    {% endif %}
+
+    <p><strong>{{ percentage }}%</strong></p>
+
+    <button class="btn" >View Details</button>
+</div>
+
+<!-- ✅ MODAL -->
+<div id="resultModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+
+        <h3>Result Summary</h3>
+
+        <p>Total Questions: {{ total_questions }}</p>
+        <p>Correct Answers: {{ correct }}</p>
+        <p>Wrong Answers: {{ wrong }}</p>
+        <p>Total Marks: {{ total_marks }}</p>
+        <p>Obtained Marks: {{ score }}</p>
+        <p>Percentage: {{ percentage }}%</p>
+        <p>Status: {{ status }}</p>
+    </div>
+</div>
+
+<!-- ✅ JAVASCRIPT -->
+<script>
+    function openModal() {
+        document.getElementById("resultModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("resultModal").style.display = "none";
+    }
+
+    // Firecracker Animation
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+
+    function createFirework(x, y) {
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: x,
+                y: y,
+                speedX: (Math.random() - 0.5) * 6,
+                speedY: (Math.random() - 0.5) * 6,
+                life: 100
+            });
+        }
+    }
+
+    function animate() {
+        ctx.fillStyle = "rgba(15,23,42,0.2)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((p, index) => {
+            p.x += p.speedX;
+            p.y += p.speedY;
+            p.life--;
+
+            ctx.fillStyle = "hsl(" + Math.random() * 360 + ", 100%, 50%)";
+            ctx.fillRect(p.x, p.y, 3, 3);
+
+            if (p.life <= 0) {
+                particles.splice(index, 1);
+            }
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    setInterval(() => {
+        createFirework(
+            Math.random() * canvas.width,
+            Math.random() * canvas.height / 2
+        );
+    }, 800);
+
+    animate();
+</script>
+
+</body>
+</html>
