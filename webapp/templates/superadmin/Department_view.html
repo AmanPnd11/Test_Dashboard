@@ -62,20 +62,6 @@ animation:fadeIn .6s ease;
 
 /* TOPBAR */
 
-.topbar{
-background:white;
-padding:15px 20px;
-border-radius:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 4px 15px rgba(0,0,0,.08);
-}
-
-.topbar h2{
-font-size:20px;
-font-weight:600;
-}
 
 /* CARD */
 
@@ -188,11 +174,11 @@ font-size:16px;
 
 <div class="main">
 
-<div class="topbar mb-4">
-<button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
-<h2>Hi, Admin..! Welcome to the Dashboard</h2>
-<a href="{% url 'adminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
-</div>
+    <div class="topbar mb-4">
+        <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">☰</button>
+        <h2>Hi, Admin..! Welcome to the Dashboard</h2>
+        <a href="{% url 'adminlogout'%}" class="btn btn-danger"><b>Logout</b></a>
+    </div>
 
 
 <h4 class="fw-bold mb-4 text-secondary">
