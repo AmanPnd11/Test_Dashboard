@@ -31,6 +31,12 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +46,8 @@ INSTALLED_APPS = [
     'webapp',
 ]
 
+SITE_ID = 1
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -47,6 +55,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -83,18 +92,32 @@ WSGI_APPLICATION = 'webpro.wsgi.application'
 #         'default': dj_database_url.config(os.getenv('DATABASE_URL'))
 #     }
 # else:
+
+# DATABASES = {
+#     'default': {
+#         # 'ENGINE': 'django.db.backends.sqlite3',
+#         # 'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'test_dash',     # database Name
+#         'USER': 'test_dash_user',       #MySQL username
+#         'PASSWORD': '3FD9YEzPRGx3aYCuFOff02LpGysao0G3', # MySQL password'test_dash_786'
+#         'HOST': 'dpg-d6t49mmuk2gs738jka9g-a.oregon-postgres.render.com',        #same machine 'localhost'
+#         'PORT': '5432',
+#     }
+# }
+
+import os
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test_dash',     # database Name
-        'USER': 'test_dash_user',       #MySQL username
-        'PASSWORD': '3FD9YEzPRGx3aYCuFOff02LpGysao0G3', # MySQL password'test_dash_786'
-        'HOST': 'dpg-d6t49mmuk2gs738jka9g-a.oregon-postgres.render.com',        #same machine 'localhost'
-        'PORT': '5432',
-    }
+    "default": dj_database_url.parse(
+        os.environ.get("postgresql://test_dashboard_3_user:zNZmTUjk5wxtbnHAkJvjzb4l4Shrt2PW@dpg-d80ognvlk1mc739qjl7g-a.oregon-postgres.render.com/test_dashboard_3"),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
+
+
 
 
 # DATABASES = {
@@ -173,3 +196,19 @@ EMAIL_USE_SSL = False
 
 EMAIL_HOST_USER='amanpande416@gmail.com'
 EMAIL_HOST_PASSWORD= 'efjm ztln vwlr zjbe'
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         'APP': {
+#             'client_id': '988119530832-jfnvl96dhavg4giindacg0mvej9mmd9g.apps.googleusercontent.com',
+#             'secret': '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',
+#             'key': ''
+#         }
+#     }
+# }
