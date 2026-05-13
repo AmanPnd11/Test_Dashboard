@@ -203,12 +203,3 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-# SOCIALACCOUNT_PROVIDERS = {
-#     'google': {
-#         'APP': {
-#             'client_id': '988119530832-jfnvl96dhavg4giindacg0mvej9mmd9g.apps.googleusercontent.com',
-#             'secret': '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',
-#             'key': ''
-#         }
-#     }
-# }
