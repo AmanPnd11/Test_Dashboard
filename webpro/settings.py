@@ -87,18 +87,42 @@ WSGI_APPLICATION = 'webpro.wsgi.application'
 #     }
 # else:
 
+
+
+# DATABASES = {
+#     'default': {
+#         # 'ENGINE': 'django.db.backends.sqlite3',
+#         # 'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'test_dash',     # database Name
+#         'USER': 'test_dash_user',       #MySQL username
+#         'PASSWORD': '3FD9YEzPRGx3aYCuFOff02LpGysao0G3', # MySQL password'test_dash_786'
+#         'HOST': 'dpg-d6t49mmuk2gs738jka9g-a.oregon-postgres.render.com',        #same machine 'localhost'
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test_dash',     # database Name
-        'USER': 'test_dash_user',       #MySQL username
-        'PASSWORD': '3FD9YEzPRGx3aYCuFOff02LpGysao0G3', # MySQL password'test_dash_786'
-        'HOST': 'dpg-d6t49mmuk2gs738jka9g-a.oregon-postgres.render.com',        #same machine 'localhost'
+
+        'NAME': 'test_dashboard_3',
+
+        'USER': 'test_dashboard_3_user',
+
+        'PASSWORD': 'zNZmTUjk5wxtbnHAkJvjzb4l4Shrt2PW',
+
+        'HOST': 'dpg-d80ognvlk1mc739qjl7g-a.oregon-postgres.render.com',
+
         'PORT': '5432',
+
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
+
+
 
 # import dj_database_url
 
